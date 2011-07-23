@@ -17,12 +17,12 @@ end.parse!
 cmd = if options [:install]
           'bundle update'
       else
-          'bundle update --local | grep "(rails)|(mysql2)" \\n rake spec'
+          'bundle update --local | grep rails \\n rake spec'
       end
 
 RUBY_VERSIONS.each do |ruby|
     RAILS_VERSIONS.each do |rails|
         puts "\n\n*** ruby version #{ruby} - rails version #{rails}\n\n"
-        system %Q{echo 'rvm use #{ruby} \nPS1="" SCHEMA_PLUS_RAILS_VERSION=#{rails} #{cmd} \n exit' | bash -i} or abort "aborting #{$0}"
+        system %Q{echo 'rvm use #{ruby} \nPS1="" SCHEMA_VALIDATIONS_RAILS_VERSION=#{rails} #{cmd} \n exit' | bash -i} or abort "aborting #{$0}"
     end
 end

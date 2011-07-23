@@ -18,7 +18,7 @@ describe "Validations" do
         class Review < ActiveRecord::Base
           belongs_to :article
           belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
-          schema_plus :validations => { :except => :content }
+          schema_validations :except => :content
         end
       end
     end
@@ -106,42 +106,47 @@ describe "Validations" do
           belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
         end
       end
-      too_big_content = 'a' * 1000
-      @review = Review.new(:content => too_big_content)
+      @too_big_content = 'a' * 1000
     end
 
     it "would normally have an error" do
+      @review = Review.new(:content => @too_big_content)
       @review.should have(1).error_on(:content)
       @review.should have(1).error_on(:author)
     end
 
     it "shouldn't validate fields passed to :except option" do
-      Review.schema_plus :validations => { :except => :content }
+      Review.schema_validations :except => :content
+      @review = Review.new(:content => @too_big_content)
       @review.should have(:no).errors_on(:content)
       @review.should have(1).error_on(:author)
     end
 
     it "shouldn't validate types passed to :except_type option using full validation" do
-      Review.schema_plus :validations => { :except_type => :validates_length_of }
+      Review.schema_validations :except_type => :validates_length_of
+      @review = Review.new(:content => @too_big_content)
       @review.should have(:no).errors_on(:content)
       @review.should have(1).error_on(:author)
     end
 
     it "shouldn't validate types passed to :except_type option using shorthand" do
-      Review.schema_plus :validations => { :except_type => :length }
+      Review.schema_validations :except_type => :length
+      @review = Review.new(:content => @too_big_content)
       @review.should have(:no).errors_on(:content)
       @review.should have(1).error_on(:author)
     end
 
     it "should only validate type passed to :only_type option" do
-      Review.schema_plus :validations => { :only_type => :length }
+      Review.schema_validations :only_type => :length
+      @review = Review.new(:content => @too_big_content)
       @review.should have(1).error_on(:content)
       @review.should have(:no).errors_on(:author)
     end
 
 
     it "shouldn't create validations if locally disabled" do
-      Review.schema_plus :validations => { :auto_create => false }
+      Review.schema_validations :auto_create => false
+      @review = Review.new(:content => @too_big_content)
       @review.should have(:no).errors_on(:content)
       @review.should have(:no).error_on(:author)
     end
@@ -153,8 +158,6 @@ describe "Validations" do
     end
 
     before(:each) do
-      class Article < ActiveRecord::Base ; end
-
       class Review < ActiveRecord::Base
         belongs_to :article
         belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
@@ -168,7 +171,7 @@ describe "Validations" do
     end
 
     it "should create validation if locally enabled" do
-      Review.schema_plus :validations => { :auto_create => true }
+      Review.schema_validations :auto_create => true
       @review.should have(1).error_on(:content)
     end
 
@@ -177,11 +180,11 @@ describe "Validations" do
   context "manually invoked" do
     before(:each) do
       class Article < ActiveRecord::Base ; end
-      Article.schema_plus :validations => { :only => [:title, :state] }
+      Article.schema_validations :only => [:title, :state]
 
       class Review < ActiveRecord::Base
         belongs_to :dummy_association
-        schema_plus :validations => { :except => :content }
+        schema_validations :except => :content
       end
     end
 
@@ -219,7 +222,7 @@ describe "Validations" do
         belongs_to :article
       end
       @columns = Review.content_columns.dup
-      Review.schema_plus :validations => { :only => [:title] }
+      Review.schema_validations :only => [:title]
     end
 
     it "shouldn't validate associations not included in :only option" do
@@ -253,12 +256,12 @@ describe "Validations" do
 
   protected
   def with_auto_validations(value = true)
-    old_value = SchemaPlus.config.validations.auto_create
+    old_value = SchemaValidations.config.auto_create
     begin
-      SchemaPlus.config.validations.auto_create = value
+      SchemaValidations.config.auto_create = value
       yield
     ensure
-      SchemaPlus.config.validations.auto_create = old_value
+      SchemaValidations.config.auto_create = old_value
     end
   end
 
