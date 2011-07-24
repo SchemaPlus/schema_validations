@@ -257,7 +257,9 @@ describe "Validations" do
   def with_auto_validations(value = true)
     old_value = SchemaValidations.config.auto_create
     begin
-      SchemaValidations.config.auto_create = value
+      SchemaValidations.setup do |config|
+        config.auto_create = value
+      end
       yield
     ensure
       SchemaValidations.config.auto_create = old_value
