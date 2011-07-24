@@ -1,4 +1,3 @@
-print "Using SQLite3\n"
 require 'logger'
 
 ActiveRecord::Base.logger = Logger.new(File.open("sqlite3.log", "w"))
