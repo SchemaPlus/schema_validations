@@ -9,8 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Ronen Barzel", "Michał Łomnicki"]
   s.email       = ["ronen@barzel.org", "michal.lomnicki@gmail.com"]
   s.homepage    = "https://github.com/lomba/schema_validations"
-  s.summary     = "Enhances ActiveRecord schema mechanism, including more DRY index creation and support for foreign key constraints and views."
-  s.summary     = "Sets validations on ActiveRecord models basing on database schema."
+  s.summary     = "Automatically creates validations basing on the database schema."
   s.description = "SchemaValidations extends ActiveRecord to automatically create validations by inspecting the database schema. This makes your models more DRY as you no longer need to duplicate NOT NULL, unique, numeric and varchar constraints on the model level."
 
   s.rubyforge_project = "schema_validations"
