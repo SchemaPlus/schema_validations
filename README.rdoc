@@ -39,15 +39,16 @@ Simply add schema_validations to your Gemfile.
 
 == What if I want something special?
 
-SchemaValidations is highly customizable. You can configure certain
-auto-validations globally or per-model.
+SchemaValidations is highly customizable. You can configure behavior
+globally via SchemaValidations.setup or per-model via
+SchemaValidations::ActiveRecord::schema_validations, such as:
 
     class User < ActiveRecord::Base
       schema_validations :except => :email
       validates :email, :presence => true, :length => { :in => 5..30 }
     end
 
-For full details see the {RDoc documentation}[http://rubydoc.info/gems/schema_validations]
+See SchemaValidations::Config for the available options.
 
 == Which validations are covered?
 
@@ -67,24 +68,37 @@ Data types:
     | :float             | :validates ... :numericality => true                      |
     | :integer           | :validates ... :numericality => { :only_integer => true } |
 
+== Dependency
+
+SchemaValidations uses the {+schema_plus+}[http://rubygems.org/gems/schema_plus] gem for its schema
+queries.  That gem will by default auto-create foreign key constraints that
+you probably want -- but if you don't want them, you can disable them using
+{+schema_plus+}[http://rubygems.org/gems/schema_plus]'s config.
+
 == Compatibility
 
 SchemaValidations supports all combinations of:
 * rails 3.0 or 3.1
 * MRI ruby 1.8.7 or 1.9.2
-* PostgreSQL, MySQL, or Sqlite3
 
 == How do I know what it did?
-TODO
+If you're curious (or dubious) about what validations SchemaValidations defines, you can check the log file.  For every assocation that SchemaValidations defines, it generates an info entry such as
+
+    [schema_validations] Article.validates_length_of :title, :allow_nil=>true, :maximum=>50
+
+which shows the exact validation definition call.  
+
+SchemaValidations defines the validations lazily, only creating them when a
+record of the class is first accessed.  So you may need to search through
+the log file for "schema_validations" to find them all (and some may not be
+defined at all if they were never needed for the logged use case).
 
 == I don't use constraints
 TODO and blame you
 
 == History
 
-* SchemaValidations is derived from the "Red Hill On Rails" plugin
- schema_validations originally created by harukizaemon
-  (https://github.com/harukizaemon)
+* SchemaValidations is derived from the "Red Hill On Rails" plugin schema_validations originally created by harukizaemon (https://github.com/harukizaemon)
 
 * SchemaValidations was created in 2011 by Michał Łomnicki and Ronen Barzel
 
@@ -99,9 +113,9 @@ full combo of tests, after you've forked & cloned:
   $ ./runspecs # as many times as you like
 
 You can also pick a specific version of rails and ruby to use, such as:
-  $ export SCHEMA_VALIDATIONS_RAILS_VERSION
-  $ SCHEMA_VALIDATIONS_RAILS_VERSION=3.1
   $ rvm use 1.9.2
+  $ export SCHEMA_VALIDATIONS_RAILS_VERSION=3.1
+  $ bundle update --local
   $ rake spec
 
 If you're running ruby 1.9.2, code coverage results will be in coverage/index.html -- it should be at 100% coverage.

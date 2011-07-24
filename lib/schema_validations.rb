@@ -8,7 +8,7 @@ require 'schema_validations/railtie' if defined?(Rails)
 module SchemaValidations
 
   # The configuation options for SchemaValidations. Set them globally in
-  # +config/initializers/schema_validations.rb+, e.g.:
+  # <tt>config/initializers/schema_validations.rb</tt>, e.g.:
   #
   #    SchemaValidations.setup do |config|
   #       config.auto_create = false
