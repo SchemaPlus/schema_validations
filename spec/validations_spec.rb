@@ -162,17 +162,16 @@ describe "Validations" do
         belongs_to :article
         belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
       end
-      too_big_content = 'a' * 1000
-      @review = Review.new(:content => too_big_content)
+      @too_big_content = 'a' * 1000
     end
 
     it "should not create validation" do
-      @review.should have(:no).errors_on(:content)
+      Review.new(:content => @too_big_title).should have(:no).errors_on(:content)
     end
 
     it "should create validation if locally enabled" do
       Review.schema_validations :auto_create => true
-      @review.should have(1).error_on(:content)
+      Review.new(:content => @too_big_content).should have(1).error_on(:content)
     end
 
   end
