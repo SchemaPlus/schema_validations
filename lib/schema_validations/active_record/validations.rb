@@ -107,7 +107,7 @@ module SchemaValidations
 
       def validate_logged(method, arg, opts={}) #:nodoc:
         if _filter_validation(method, arg) 
-          msg = "SchemaValidations: #{self.name}.#{method} #{arg.inspect}"
+          msg = "[schema_validations] #{self.name}.#{method} #{arg.inspect}"
           msg += ", #{opts.inspect[1...-1]}" if opts.any?
           logger.info msg
           send method, arg, opts
