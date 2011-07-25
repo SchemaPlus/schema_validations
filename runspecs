@@ -17,7 +17,7 @@ end.parse!
 cmds = if options [:install]
            ['bundle update']
        else
-           ['bundle update --local | grep rails', 'rake spec']
+           ['bundle update --local rails | grep rails', 'rake spec']
        end
 
 n = 1
