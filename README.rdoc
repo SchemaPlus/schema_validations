@@ -115,11 +115,11 @@ full combo of tests, after you've forked & cloned:
 You can also pick a specific version of rails and ruby to use, such as:
   $ rvm use 1.9.2
   $ export SCHEMA_VALIDATIONS_RAILS_VERSION=3.1
-  $ bundle update --local
+  $ bundle update --local rails
   $ rake spec
 
 If you're running ruby 1.9.2, code coverage results will be in coverage/index.html -- it should be at 100% coverage.
 
 == License
 
-This plugin is released under the MIT license.
+This gem is released under the MIT license.
