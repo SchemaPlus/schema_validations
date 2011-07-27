@@ -2,6 +2,20 @@ module SchemaValidations
   module ActiveRecord
     module Validations
 
+      def self.extended(base) # :nodoc:
+        base.delegate :load_schema_validations, :to => 'self.class'
+        if base.respond_to?(:class_inheritable_attribute) # AR 2.X compat
+          base.class_inheritable_attribute :schema_validations_loaded
+        else
+          base.class_attribute :schema_validations_loaded
+        end
+      end
+
+      def inherited(klass) # :nodoc:
+        super
+        before_validation :load_schema_validations unless schema_validations_loaded?
+      end
+
       # Per-model override of Config options.  Use via, e.g.
       #     class MyModel < ActiveRecord::Base
       #         schema_associations :auto_create => false
@@ -14,13 +28,7 @@ module SchemaValidations
         @schema_validations_config ||= SchemaValidations.config.dup
       end
 
-      def define_attribute_methods(*) #:nodoc:
-        super
-        load_schema_validations
-      end
-
       private
-
       # Adds schema-based validations to model.
       # Attributes as well as associations are validated.
       # For instance if there is column
@@ -46,10 +54,9 @@ module SchemaValidations
       def load_schema_validations #:nodoc:
         # Don't bother if: it's already been loaded; the class is abstract; not a base class; or the table doesn't exist
         return unless create_schema_validations?
-
         load_column_validations
         load_association_validations
-        @schema_validations_loaded = true
+        self.schema_validations_loaded = true
       end
 
       def load_column_validations #:nodoc:
@@ -102,7 +109,7 @@ module SchemaValidations
       end
 
       def create_schema_validations? #:nodoc:
-        schema_validations_config.auto_create? && !(@schema_validations_loaded || abstract_class? || name.blank? || !table_exists?)
+        schema_validations_config.auto_create? && !(schema_validations_loaded || abstract_class? || name.blank? || !table_exists?)
       end
 
       def validate_logged(method, arg, opts={}) #:nodoc:
