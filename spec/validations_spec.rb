@@ -28,7 +28,7 @@ describe "Validations" do
     end
 
     it "should validate content presence" do
-      post = Article.new.should have(1).error_on(:content)
+      Article.new.should have(1).error_on(:content)
     end
 
     it "should check title length" do
