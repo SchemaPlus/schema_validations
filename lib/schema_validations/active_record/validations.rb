@@ -4,11 +4,7 @@ module SchemaValidations
 
       def self.extended(base) # :nodoc:
         base.delegate :load_schema_validations, :to => 'self.class'
-        if base.respond_to?(:class_inheritable_attribute) # AR 2.X compat
-          base.class_inheritable_attribute :schema_validations_loaded
-        else
-          base.class_attribute :schema_validations_loaded
-        end
+        base.class_attribute :schema_validations_loaded
       end
 
       def inherited(klass) # :nodoc:
