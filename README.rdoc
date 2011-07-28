@@ -78,7 +78,7 @@ you probably want -- but if you don't want them, you can disable them using
 == Compatibility
 
 SchemaValidations supports all combinations of:
-* rails 3.0 or 3.1
+* rails 2.3, 3.0, or 3.1
 * MRI ruby 1.8.7 or 1.9.2
 
 == How do I know what it did?
@@ -89,7 +89,7 @@ If you're curious (or dubious) about what validations SchemaValidations defines,
 which shows the exact validation definition call.  
 
 SchemaValidations defines the validations lazily, only creating them when a
-record of the class is first accessed.  So you may need to search through
+record of the class is first validated.  So you may need to search through
 the log file for "schema_validations" to find them all (and some may not be
 defined at all if they were never needed for the logged use case).
 
