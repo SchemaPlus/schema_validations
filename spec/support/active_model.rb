@@ -1,7 +1,7 @@
 # ported from rspec-rails
 # There is no reason to install whole gem as we
 # need only that tiny helper
-module ::ActiveModel::Validations
+class ::ActiveRecord::Base
 
   def error_on(attribute)
     self.valid?
