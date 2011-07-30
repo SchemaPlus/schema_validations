@@ -169,8 +169,13 @@ describe "Validations" do
       Review.new(:content => @too_big_title).should have(:no).errors_on(:content)
     end
 
-    it "should create validation if locally enabled" do
+    it "should create validation if locally enabled explicitly" do
       Review.schema_validations :auto_create => true
+      Review.new(:content => @too_big_content).should have(1).error_on(:content)
+    end
+
+    it "should create validation if locally enabled implicitly" do
+      Review.schema_validations
       Review.new(:content => @too_big_content).should have(1).error_on(:content)
     end
 

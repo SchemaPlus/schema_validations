@@ -37,7 +37,7 @@ Simply add schema_validations to your Gemfile.
 
     gem "schema_validations"
 
-== What if I want something special?
+=== What if I want something special?
 
 SchemaValidations is highly customizable. You can configure behavior
 globally via SchemaValidations.setup or per-model via
@@ -49,6 +49,24 @@ SchemaValidations::ActiveRecord::schema_validations, such as:
     end
 
 See SchemaValidations::Config for the available options.
+
+=== This seems cool, but I'm worried about too much automagic
+
+You can globally turn off automatic creation in
+<tt>config/initializers/schema_validations.rb</tt>:
+
+  SchemaValidations.setup do |config|
+    config.auto_create = false
+  end
+
+Then in any model where you want automatic validations, just do
+
+  class Post < ActiveRecord::Base
+    schema_validations
+  end
+
+You can also pass options as per above.
+
 
 == Which validations are covered?
 

@@ -14,10 +14,28 @@ module SchemaValidations
 
       # Per-model override of Config options.  Use via, e.g.
       #     class MyModel < ActiveRecord::Base
-      #         schema_associations :auto_create => false
+      #         schema_validations :auto_create => false
       #     end
-      def schema_validations(opts)
-        @schema_validations_config = SchemaValidations.config.merge(opts)
+      #
+      # If <tt>:auto_create</tt> is not specified, it is implicitly
+      # specified as true.  This allows the "non-invasive" style of using
+      # SchemaValidations in which you set the global Config to
+      # <tt>auto_create = false</tt>, then in any model that you want auto
+      # validations you simply do:
+      #
+      #     class MyModel < ActiveRecord::Base
+      #         schema_validations
+      #     end
+      #
+      #  Of course other options can be passed, such as
+      #
+      #     class MyModel < ActiveRecord::Base
+      #         schema_validations :except_type => :validates_presence_of
+      #     end
+      #
+      #
+      def schema_validations(opts={})
+        @schema_validations_config = SchemaValidations.config.merge({:auto_create => true}.merge(opts))
       end
 
       def schema_validations_config # :nodoc:
