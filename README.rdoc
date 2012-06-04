@@ -1,5 +1,12 @@
 = SchemaValidations
 
+SchemaValidations is an ActiveRecord extension that keeps your model class
+definitions simpler and more DRY, by automatically defining validations
+based on the database schema.
+
+{<img src="https://secure.travis-ci.org/lomba/schema_validations.png"/>}[http://travis-ci.org/lomba/schema_validations]
+{<img src="https://gemnasium.com/lomba/schema_validations.png" alt="Dependency Status" />}[https://gemnasium.com/lomba/schema_validations]
+
 == Overview
 
 One of the great things about Rails (ActiveRecord, in particular) is that it
@@ -96,8 +103,8 @@ you probably want -- but if you don't want them, you can disable them using
 == Compatibility
 
 SchemaValidations supports all combinations of:
-* rails 2.3, 3.0, or 3.1
-* MRI ruby 1.8.7 or 1.9.2
+* rails 2.3, 3.0, 3.1, or 3.2
+* MRI ruby 1.8.7, 1.9.2, or 1.9.3
 
 == How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations defines, you can check the log file.  For every assocation that SchemaValidations defines, it generates an info entry such as
@@ -110,9 +117,6 @@ SchemaValidations defines the validations lazily, only creating them when a
 record of the class is first validated.  So you may need to search through
 the log file for "schema_validations" to find them all (and some may not be
 defined at all if they were never needed for the logged use case).
-
-== I don't use constraints
-TODO and blame you
 
 == History
 
@@ -132,11 +136,10 @@ full combo of tests, after you've forked & cloned:
 
 See <tt>./runspecs --help</tt> for other options.  You can also pick a specific version of rails and ruby to use, such as:
   $ rvm use 1.9.2
-  $ export SCHEMA_VALIDATIONS_RAILS_VERSION=3.1
-  $ bundle update --local rails
+  $ export BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.1
   $ rake spec
 
-If you're running ruby 1.9.2, code coverage results will be in coverage/index.html -- it should be at 100% coverage.
+If you're running ruby 1.9, code coverage results will be in coverage/index.html -- it should be at 100% coverage.
 
 == License
 
