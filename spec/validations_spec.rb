@@ -20,11 +20,29 @@ describe "Validations" do
           belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
           schema_validations :except => :content
         end
+
+        class Parent < ActiveRecord::Base
+          has_one :child, :dependent => :destroy
+        end
+
+        class Child < ActiveRecord::Base
+          belongs_to :parent
+        end
+      end
+    end
+
+    # only expect this to work in Rails >= 3, which conveniently is when
+    # :validators was defined
+    if ActiveRecord::Base.respond_to? :validators
+      it "should define validators as soon as an object is created" do
+        Article.validators.should be_blank
+        Article.new
+        Article.validators.should_not be_blank
       end
     end
 
     it "should be valid with valid attributes" do
-      Article.new(valid_attributes).should be_valid
+      Article.new(valid_article_attributes).should be_valid
     end
 
     it "should validate content presence" do
@@ -52,15 +70,15 @@ describe "Validations" do
     end
 
     it "should validate title uniqueness" do
-      article1 = Article.create(valid_attributes)
-      article2 = Article.new(:title => valid_attributes[:title])
+      article1 = Article.create(valid_article_attributes)
+      article2 = Article.new(:title => valid_article_attributes[:title])
       article2.should have(1).error_on(:title)
       article1.destroy
     end
 
     it "should validate state uniqueness in scope of 'active' value" do
-      article1 = Article.create(valid_attributes)
-      article2 = Article.new(valid_attributes.merge(:title => 'SchemaPlus 2.0 released'))
+      article1 = Article.create(valid_article_attributes)
+      article2 = Article.new(valid_article_attributes.merge(:title => 'SchemaPlus 2.0 released'))
       article2.should_not be_valid
       article2.toggle(:active)
       article2.should be_valid
@@ -73,7 +91,7 @@ describe "Validations" do
     end
 
     it "should validate uniqueness of belongs_to association" do
-      article = Article.create(valid_attributes)
+      article = Article.create(valid_article_attributes)
       article.should be_valid
       review1 = Review.create(:article => article, :author => 'michal')
       review1.should be_valid
@@ -85,7 +103,17 @@ describe "Validations" do
       Review.new.should have(1).error_on(:news_article)
     end
 
-    def valid_attributes
+    it "should not break association assignment" do
+      child = Child.new
+      child.should have(1).error_on(:parent)  # confirm validates_presence_of
+
+      parent = Parent.new
+      parent.child = Child.new
+      expect { parent.save! }.to_not raise_error
+      expect { parent.child.save! }.to_not raise_error
+    end
+
+    def valid_article_attributes
       {
         :title => 'SchemaPlus released!',
         :content => "Database matters. Get full use of it but don't write unecessary code. Get SchemaPlus!",
@@ -293,6 +321,15 @@ describe "Validations" do
           t.string :type
         end
         add_index :reviews, :article_id, :unique => true
+
+        create_table :parents, :force => true do |t|
+          t.string :name
+        end
+
+        create_table :children, :force => true do |t|
+          t.integer :parent_id, :null => false
+          t.string :name
+        end
 
       end
     end
