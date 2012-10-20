@@ -5,11 +5,25 @@ module SchemaValidations
       def self.extended(base) # :nodoc:
         base.delegate :load_schema_validations, :to => 'self.class'
         base.class_attribute :schema_validations_loaded
+        class << base
+          alias_method_chain :validators, :schema_validations
+          alias_method_chain :validators_on, :schema_validations
+        end if base.respond_to? :validators
       end
 
       def inherited(klass) # :nodoc:
         super
         before_validation :load_schema_validations unless schema_validations_loaded?
+      end
+
+      def validators_with_schema_validations
+        load_schema_validations unless schema_validations_loaded?
+        validators_without_schema_validations
+      end
+
+      def validators_on_with_schema_validations(*args)
+        load_schema_validations unless schema_validations_loaded?
+        validators_on_without_schema_validations(*args)
       end
 
       # Per-model override of Config options.  Use via, e.g.

@@ -23,6 +23,14 @@ describe "Validations" do
       end
     end
 
+    # only expect this to work in Rails >= 3, which conveniently is when
+    # :validators was defined
+    if ActiveRecord::Base.respond_to? :validators
+      it "should define validators before attempting validation" do
+        Article.validators_on(:content).should_not be_blank
+      end
+    end
+
     it "should be valid with valid attributes" do
       Article.new(valid_attributes).should be_valid
     end
