@@ -113,13 +113,18 @@ If you're curious (or dubious) about what validations SchemaValidations defines,
 
 which shows the exact validation definition call.  
 
-SchemaValidations defines the validations lazily, only creating them when a
-record of the class is first validated.  So you may need to search through
-the log file for "schema_validations" to find them all (and some may not be
-defined at all if they were never needed for the logged use case).
+SchemaValidations defines the validations lazily for each class, only
+creating them when they are needed (to validate a record of the class, or
+in response to introspection on the class).  So you may need to search
+through the log file for "schema_validations" to find all the validations,
+and some classes' validations may not be defined at all if they
+were never needed for the logged use case.
 
 == History
 
+* Recent Release notes:
+    * 0.2.0 - new feature: ActiveRecord#validators and ActiveRecord#validators_on now ensure schema_validations are loaded
+    
 * SchemaValidations is derived from the "Red Hill On Rails" plugin schema_validations originally created by harukizaemon (https://github.com/harukizaemon)
 
 * SchemaValidations was created in 2011 by Michał Łomnicki and Ronen Barzel
