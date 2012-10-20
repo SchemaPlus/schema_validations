@@ -5,14 +5,10 @@ module SchemaValidations
       def self.extended(base) # :nodoc:
         base.delegate :load_schema_validations, :to => 'self.class'
         base.class_attribute :schema_validations_loaded
-
-        # this works for Rails 3.  otherwise need to use :before_validation
-        base.after_initialize :load_schema_validations if base.respond_to?(:after_initialize)
       end
 
       def inherited(klass) # :nodoc:
         super
-        # this is only needed for Rails 2
         before_validation :load_schema_validations unless schema_validations_loaded?
       end
 
@@ -70,8 +66,6 @@ module SchemaValidations
       #  * :except - auto-validate all but given attributes
       #
       def load_schema_validations #:nodoc:
-        return if self.schema_validations_loaded
-
         # Don't bother if: it's already been loaded; the class is abstract; not a base class; or the table doesn't exist
         return unless create_schema_validations?
         load_column_validations
@@ -129,7 +123,7 @@ module SchemaValidations
       end
 
       def create_schema_validations? #:nodoc:
-        schema_validations_config.auto_create? && !(abstract_class? || name.blank? || !table_exists?)
+        schema_validations_config.auto_create? && !(schema_validations_loaded || abstract_class? || name.blank? || !table_exists?)
       end
 
       def validate_logged(method, arg, opts={}) #:nodoc:
