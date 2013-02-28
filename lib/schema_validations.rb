@@ -3,7 +3,7 @@ require 'valuable'
 require 'schema_plus'
 require 'schema_validations/version'
 require 'schema_validations/active_record/validations'
-require 'schema_validations/railtie' if defined?(Rails)
+require 'schema_validations/railtie' if defined?(Rails::Railtie)
 
 module SchemaValidations
 
