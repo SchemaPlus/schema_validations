@@ -23,3 +23,5 @@ pkg
 *.log
 *.sqlite3
 Gemfile.lock
+gemfiles/*.lock
+gemfiles/**/*.lock
