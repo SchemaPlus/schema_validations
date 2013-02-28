@@ -123,6 +123,7 @@ were never needed for the logged use case.
 == History
 
 * Recent Release notes:
+    * 0.2.1 - rails 2.3 compatibility (check for Rails::Railties symbol).  thanks to https://github.com/thehappycoder
     * 0.2.0 - new feature: ActiveRecord#validators and ActiveRecord#validators_on now ensure schema_validations are loaded
     
 * SchemaValidations is derived from the "Red Hill On Rails" plugin schema_validations originally created by harukizaemon (https://github.com/harukizaemon)
