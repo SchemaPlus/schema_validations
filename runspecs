@@ -2,6 +2,7 @@
 
 require 'optparse'
 require 'ostruct'
+require 'shellwords'
 require 'tempfile'
 
 RUBY_VERSIONS = %W[1.8.7 1.9.2 1.9.3]
@@ -39,6 +40,10 @@ OptionParser.new do |opts|
       o.rails_versions = [RAILS_VERSIONS.last]
     end
 
+    opts.on("--rspec", "run rspec rather than rake") do |v|
+        o.rspec = v
+    end
+
 end.parse!
 
 
@@ -53,7 +58,6 @@ combos = o.ruby_versions.product(o.rails_versions).map{|product| Combo.new(*prod
 
 
 GEMFILES_DIR = File.expand_path('../gemfiles', __FILE__)
-total = o.ruby_versions.size * o.rails_versions.size
 errs = []
 combos.each_with_index do |combo, n|
     ruby = combo.ruby
@@ -64,11 +68,13 @@ combos.each_with_index do |combo, n|
               "bundle update"
           when o.install
               "bundle install"
+          when o.rspec
+              "bundle exec rspec"
           else
               "bundle exec rake spec"
           end
 
-    command = %Q{BUNDLE_GEMFILE="#{File.join(GEMFILES_DIR, "Gemfile.rails-#{rails}")}" rvm #{ruby} do #{cmd}}
+    command = %Q{BUNDLE_GEMFILE="#{File.join(GEMFILES_DIR, "Gemfile.rails-#{rails}")}" rvm #{ruby} do #{cmd} #{Shellwords.join(ARGV)}}
 
     puts "\n\n*** ruby version #{ruby} - rails version #{rails}  [#{n+1} of #{combos.size}]\n\n#{command}"
 
@@ -81,3 +87,4 @@ combos.each_with_index do |combo, n|
     end
 end
 puts errs.any? ?  "\n*** #{errs.size} failures:\n\t#{errs.join("\n\t")}" : "\n*** #{combos.size > 1 ? 'all versions' : 'spec'} succeeded ***" unless o.dry_run
+exit !errs.any?
