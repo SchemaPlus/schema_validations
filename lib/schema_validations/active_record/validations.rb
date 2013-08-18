@@ -3,8 +3,12 @@ module SchemaValidations
     module Validations
 
       def self.extended(base) # :nodoc:
-        base.delegate :load_schema_validations, :to => 'self.class'
-        base.class_attribute :schema_validations_loaded
+        base.class_eval do
+          define_method :load_schema_validations do
+            self.class.send :load_schema_validations
+          end
+          class_attribute :schema_validations_loaded
+        end
         class << base
           alias_method_chain :validators, :schema_validations
           alias_method_chain :validators_on, :schema_validations
