@@ -5,8 +5,8 @@ require 'ostruct'
 require 'shellwords'
 require 'tempfile'
 
-RUBY_VERSIONS = %W[1.8.7 1.9.2 1.9.3]
-RAILS_VERSIONS = %W[2.3 3.0 3.1 3.2]
+RUBY_VERSIONS = %W[1.8.7 1.9.2 1.9.3 2.0.0]
+RAILS_VERSIONS = %W[2.3 3.0 3.1 3.2 4.0]
 
 o = OpenStruct.new
 o.ruby_versions = RUBY_VERSIONS
@@ -51,6 +51,7 @@ Combo = Struct.new(:ruby, :rails)
 
 combos = o.ruby_versions.product(o.rails_versions).map{|product| Combo.new(*product)}.select {|combo|
     case
+    when combo.rails >= "4.0" && combo.ruby < "1.9.3" then false
     when combo.rails >= "3.2" && combo.ruby <= "1.8.7" then false
     else true
     end
