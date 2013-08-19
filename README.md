@@ -130,6 +130,11 @@ use case.
 
 ## Release Notes
 
+### 1.0.0
+
+* Works with Rails 4.0.  Thanks to (@davll)[https://github.com/davll]
+* No longer support Rails < 3.2 or Ruby < 1.9.3
+
 ### 0.2.2
     
 * Rails 2.3 compatibility (check for Rails::Railties symbol).  thanks to https://github.com/thehappycoder
