@@ -23,12 +23,20 @@ describe "Validations" do
       end
     end
 
-    # only expect this to work in Rails >= 3, which conveniently is when
-    # :validators was defined
-    if ActiveRecord::Base.respond_to? :validators
-      it "should define validators before attempting validation" do
-        Article.validators_on(:content).should_not be_blank
-      end
+    it "should create validations for introspection with validators" do
+      Article.validators.map{|v| v.class.name.demodulize}.uniq.should =~ %W[
+        InclusionValidator
+        LengthValidator
+        NumericalityValidator
+        PresenceValidator
+        UniquenessValidator
+      ]
+    end
+
+    it "should create validations for introspection with validators_on" do
+      Article.validators_on(:content).map{|v| v.class.name.demodulize}.uniq.should =~ %W[
+        PresenceValidator
+      ]
     end
 
     it "should be valid with valid attributes" do
