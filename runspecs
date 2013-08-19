@@ -51,11 +51,28 @@ Combo = Struct.new(:ruby, :rails)
 
 combos = o.ruby_versions.product(o.rails_versions).map{|product| Combo.new(*product)}.select {|combo|
     case
-    when combo.rails >= "3.2" && combo.ruby <= "1.8.7" then false
+    when combo.rails >= "3.2" && combo.ruby <= "1.8.7" then false  # no longer happens, just keeping it as an example
     else true
     end
 }
 
+if system("which -s rvm")
+    # using rvm
+    def ruby_version_selector(ruby)
+        "rvm #{ruby} do"
+    end
+else
+    # using rbenv.  remove current version from path and current gem path
+    # so that forked shell will respect RBENV_VERSION variable
+    ENV['PATH'] = ENV['PATH'].split(':').reject{|dir| dir =~ %r{/rbenv/versions/}}.join(':')
+    ENV['GEM_PATH'] = nil
+
+    def ruby_version_selector(ruby)
+        @versions ||= `rbenv versions --bare`.split
+        version = @versions.select{|v| v.start_with? ruby}.last || abort("no ruby version '#{ruby}' installed in rbenv")
+        "RBENV_VERSION=#{version}"
+    end
+end
 
 GEMFILES_DIR = File.expand_path('../gemfiles', __FILE__)
 errs = []
@@ -74,7 +91,7 @@ combos.each_with_index do |combo, n|
               "bundle exec rake spec"
           end
 
-    command = %Q{BUNDLE_GEMFILE="#{File.join(GEMFILES_DIR, "Gemfile.rails-#{rails}")}" rvm #{ruby} do #{cmd} #{Shellwords.join(ARGV)}}
+    command = %Q{BUNDLE_GEMFILE="#{File.join(GEMFILES_DIR, "Gemfile.rails-#{rails}")}" #{ruby_version_selector(ruby)} #{cmd} #{Shellwords.join(ARGV)}}
 
     puts "\n\n*** ruby version #{ruby} - rails version #{rails}  [#{n+1} of #{combos.size}]\n\n#{command}"
 
