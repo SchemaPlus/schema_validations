@@ -81,19 +81,19 @@ You can also pass options as per above.
 
 Constraints:
 
-    |      Constraint     |                     Validation                           |
-    |---------------------|----------------------------------------------------------|
-    | :null => false      | validates ... :presence => true                          |
-    | :limit => 100       | validates ... :length => { :maximum => 100 }             |
-    | :unique => true     | validates ... :uniqueness => true                        |
+|      Constraint     |                     Validation                           |
+|---------------------|----------------------------------------------------------|
+| :null => false      | validates ... :presence => true                          |
+| :limit => 100       | validates ... :length => { :maximum => 100 }             |
+| :unique => true     | validates ... :uniqueness => true                        |
 
 Data types:
 
-    |         Type       |                      Validation                           |
-    |--------------------|-----------------------------------------------------------|
-    | :boolean           | :validates ... :inclusion => { :in => [true, false] }     |
-    | :float             | :validates ... :numericality => true                      |
-    | :integer           | :validates ... :numericality => { :only_integer => true } |
+|         Type       |                      Validation                           |
+|--------------------|-----------------------------------------------------------|
+| :boolean           | :validates ... :inclusion => { :in => [true, false] }     |
+| :float             | :validates ... :numericality => true                      |
+| :integer           | :validates ... :numericality => { :only_integer => true } |
 
 ## Dependency
 
