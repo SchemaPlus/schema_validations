@@ -1,8 +1,6 @@
-if RUBY_VERSION > "1.9"
-  require 'simplecov'
-  require 'simplecov-gem-adapter'
-  SimpleCov.start "gem"
-end
+require 'simplecov'
+require 'simplecov-gem-adapter'
+SimpleCov.start "gem"
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -24,4 +22,4 @@ def remove_all_models
   end
 end
 
-SimpleCov.command_name ActiveRecord::Base.connection.adapter_name if defined? SimpleCov
+SimpleCov.command_name "[Ruby #{RUBY_VERSION} - ActiveRecord #{::ActiveRecord::VERSION::STRING}]"
