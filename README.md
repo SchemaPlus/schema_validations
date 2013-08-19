@@ -132,7 +132,7 @@ use case.
 
 ### 1.0.0
 
-* Works with Rails 4.0.  Thanks to (@davll)[https://github.com/davll]
+* Works with Rails 4.0.  Thanks to [@davll](https://github.com/davll)
 * No longer support Rails < 3.2 or Ruby < 1.9.3
 
 ### 0.2.2
