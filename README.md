@@ -174,3 +174,7 @@ coverage/index.html -- it should be at 100% coverage.
 ## License
 
 This gem is released under the MIT license.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lomba/schema_validations/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
