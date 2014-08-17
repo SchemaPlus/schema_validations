@@ -25,7 +25,7 @@ In that case :null => false, :limit => 30 and :boolean must be covered on the
 model level.
 
     class User < ActiveRecord::Base
-      validates :email, :presence => true, :length => 30
+      validates :email, :presence => true, :length => { :maximum => 30 }
       validates :confirmed, :presence => true, :inclusion => { :in => [true, false] }
     end
 
