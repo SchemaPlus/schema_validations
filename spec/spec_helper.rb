@@ -11,6 +11,9 @@ require 'schema_validations'
 require 'logger'
 require 'connection'
 
+# avoid deprecation warnings
+I18n.enforce_available_locales = true
+
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
 
 def remove_all_models

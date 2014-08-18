@@ -24,81 +24,81 @@ describe "Validations" do
     end
 
     it "should create validations for introspection with validators" do
-      Article.validators.map{|v| v.class.name.demodulize}.uniq.should =~ %W[
+      expect(Article.validators.map{|v| v.class.name.demodulize}.uniq).to match_array(%W[
         InclusionValidator
         LengthValidator
         NumericalityValidator
         PresenceValidator
         UniquenessValidator
-      ]
+      ])
     end
 
     it "should create validations for introspection with validators_on" do
-      Article.validators_on(:content).map{|v| v.class.name.demodulize}.uniq.should =~ %W[
+      expect(Article.validators_on(:content).map{|v| v.class.name.demodulize}.uniq).to match_array(%W[
         PresenceValidator
-      ]
+      ])
     end
 
     it "should be valid with valid attributes" do
-      Article.new(valid_attributes).should be_valid
+      expect(Article.new(valid_attributes)).to be_valid
     end
 
     it "should validate content presence" do
-      Article.new.should have(1).error_on(:content)
+      expect(Article.new.error_on(:content).size).to eq(1)
     end
 
     it "should check title length" do
-      Article.new(:title => 'a' * 100).should have(1).error_on(:title)
+      expect(Article.new(:title => 'a' * 100).error_on(:title).size).to eq(1)
     end
 
     it "should validate state numericality" do
-      Article.new(:state => 'unknown').should have(1).error_on(:state)
+      expect(Article.new(:state => 'unknown').error_on(:state).size).to eq(1)
     end
 
     it "should validate if state is integer" do
-      Article.new(:state => 1.23).should have(1).error_on(:state)
+      expect(Article.new(:state => 1.23).error_on(:state).size).to eq(1)
     end
 
     it "should validate average_mark numericality" do
-      Article.new(:average_mark => "high").should have(1).error_on(:average_mark)
+      expect(Article.new(:average_mark => "high").error_on(:average_mark).size).to eq(1)
     end
 
     it "should validate boolean fields" do
-      Article.new(:active => nil).should have(1).error_on(:active)
+      expect(Article.new(:active => nil).error_on(:active).size).to eq(1)
     end
 
     it "should validate title uniqueness" do
       article1 = Article.create(valid_attributes)
       article2 = Article.new(:title => valid_attributes[:title])
-      article2.should have(1).error_on(:title)
+      expect(article2.error_on(:title).size).to eq(1)
       article1.destroy
     end
 
     it "should validate state uniqueness in scope of 'active' value" do
       article1 = Article.create(valid_attributes)
       article2 = Article.new(valid_attributes.merge(:title => 'SchemaPlus 2.0 released'))
-      article2.should_not be_valid
+      expect(article2).not_to be_valid
       article2.toggle(:active)
-      article2.should be_valid
+      expect(article2).to be_valid
       article1.destroy
     end
 
     it "should validate presence of belongs_to association" do
       review = Review.new
-      review.should have(1).error_on(:article)
+      expect(review.error_on(:article).size).to eq(1)
     end
 
     it "should validate uniqueness of belongs_to association" do
       article = Article.create(valid_attributes)
-      article.should be_valid
+      expect(article).to be_valid
       review1 = Review.create(:article => article, :author => 'michal')
-      review1.should be_valid
+      expect(review1).to be_valid
       review2 = Review.new(:article => article, :author => 'michal')
-      review2.should have_at_least(1).error_on(:article_id)
+      expect(review2.error_on(:article_id).size).to be >= 1
     end
 
     it "should validate associations with unmatched column and name" do
-      Review.new.should have(1).error_on(:news_article)
+      expect(Review.new.error_on(:news_article).size).to eq(1)
     end
 
     def valid_attributes
@@ -127,44 +127,44 @@ describe "Validations" do
 
     it "would normally have an error" do
       @review = Review.new(:content => @too_big_content)
-      @review.should have(1).error_on(:content)
-      @review.should have(1).error_on(:author)
+      expect(@review.error_on(:content).size).to eq(1)
+      expect(@review.error_on(:author).size).to eq(1)
     end
 
     it "shouldn't validate fields passed to :except option" do
       Review.schema_validations :except => :content
       @review = Review.new(:content => @too_big_content)
-      @review.should have(:no).errors_on(:content)
-      @review.should have(1).error_on(:author)
+      expect(@review.errors_on(:content).size).to eq(0)
+      expect(@review.error_on(:author).size).to eq(1)
     end
 
     it "shouldn't validate types passed to :except_type option using full validation" do
       Review.schema_validations :except_type => :validates_length_of
       @review = Review.new(:content => @too_big_content)
-      @review.should have(:no).errors_on(:content)
-      @review.should have(1).error_on(:author)
+      expect(@review.errors_on(:content).size).to eq(0)
+      expect(@review.error_on(:author).size).to eq(1)
     end
 
     it "shouldn't validate types passed to :except_type option using shorthand" do
       Review.schema_validations :except_type => :length
       @review = Review.new(:content => @too_big_content)
-      @review.should have(:no).errors_on(:content)
-      @review.should have(1).error_on(:author)
+      expect(@review.errors_on(:content).size).to eq(0)
+      expect(@review.error_on(:author).size).to eq(1)
     end
 
     it "should only validate type passed to :only_type option" do
       Review.schema_validations :only_type => :length
       @review = Review.new(:content => @too_big_content)
-      @review.should have(1).error_on(:content)
-      @review.should have(:no).errors_on(:author)
+      expect(@review.error_on(:content).size).to eq(1)
+      expect(@review.errors_on(:author).size).to eq(0)
     end
 
 
     it "shouldn't create validations if locally disabled" do
       Review.schema_validations :auto_create => false
       @review = Review.new(:content => @too_big_content)
-      @review.should have(:no).errors_on(:content)
-      @review.should have(:no).error_on(:author)
+      expect(@review.errors_on(:content).size).to eq(0)
+      expect(@review.error_on(:author).size).to eq(0)
     end
   end
 
@@ -182,17 +182,17 @@ describe "Validations" do
     end
 
     it "should not create validation" do
-      Review.new(:content => @too_big_title).should have(:no).errors_on(:content)
+      expect(Review.new(:content => @too_big_title).errors_on(:content).size).to eq(0)
     end
 
     it "should create validation if locally enabled explicitly" do
       Review.schema_validations :auto_create => true
-      Review.new(:content => @too_big_content).should have(1).error_on(:content)
+      expect(Review.new(:content => @too_big_content).error_on(:content).size).to eq(1)
     end
 
     it "should create validation if locally enabled implicitly" do
       Review.schema_validations
-      Review.new(:content => @too_big_content).should have(1).error_on(:content)
+      expect(Review.new(:content => @too_big_content).error_on(:content).size).to eq(1)
     end
 
   end
@@ -212,26 +212,26 @@ describe "Validations" do
       too_big_title = 'a' * 100
       wrong_state = 'unknown'
       article = Article.new(:title => too_big_title, :state => wrong_state)
-      article.should have(1).error_on(:title)
-      article.should have(1).error_on(:state)
+      expect(article.error_on(:title).size).to eq(1)
+      expect(article.error_on(:state).size).to eq(1)
     end
 
     it "shouldn't validate skipped fields" do
       article = Article.new
-      article.should have(:no).errors_on(:content)
-      article.should have(:no).errors_on(:average_mark)
+      expect(article.errors_on(:content).size).to eq(0)
+      expect(article.errors_on(:average_mark).size).to eq(0)
     end
 
     it "shouldn't validate association on unexisting column" do
-      Review.new.should have(:no).errors_on(:dummy_association)
+      expect(Review.new.errors_on(:dummy_association).size).to eq(0)
     end
 
     it "shouldn't validate fields passed to :except option" do
-      Review.new.should have(:no).errors_on(:content)
+      expect(Review.new.errors_on(:content).size).to eq(0)
     end
 
     it "should validate all fields but passed to :except option" do
-      Review.new.should have(1).error_on(:author)
+      expect(Review.new.error_on(:author).size).to eq(1)
     end
 
   end
@@ -246,11 +246,11 @@ describe "Validations" do
     end
 
     it "shouldn't validate associations not included in :only option" do
-      Review.new.should have(:no).errors_on(:article)
+      expect(Review.new.errors_on(:article).size).to eq(0)
     end
 
     it "shouldn't change content columns of the model" do
-      @columns.should == Review.content_columns
+      expect(@columns).to eq(Review.content_columns)
     end
 
   end
@@ -262,14 +262,14 @@ describe "Validations" do
       class Review < ActiveRecord::Base ; end
       class PremiumReview < Review ; end
       PremiumReview.new
-      Review.new.should have(1).error_on(:author)
+      expect(Review.new.error_on(:author).size).to eq(1)
     end
 
     it "shouldn't create doubled validations" do
       class Review < ActiveRecord::Base ; end
       Review.new
       class PremiumReview < Review ; end
-      PremiumReview.new.should have(1).error_on(:author)
+      expect(PremiumReview.new.error_on(:author).size).to eq(1)
     end
 
   end
