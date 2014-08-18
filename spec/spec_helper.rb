@@ -1,5 +1,5 @@
 require 'simplecov'
-require 'simplecov-gem-adapter'
+require 'simplecov-gem-profile'
 SimpleCov.start "gem"
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
