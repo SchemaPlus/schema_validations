@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ronen Barzel", "Michał Łomnicki"]
   s.email       = ["ronen@barzel.org", "michal.lomnicki@gmail.com"]
-  s.homepage    = "https://github.com/lomba/schema_validations"
+  s.homepage    = "https://github.com/SchemaPlus/schema_validations"
   s.summary     = "Automatically creates validations basing on the database schema."
   s.description = "SchemaValidations extends ActiveRecord to automatically create validations by inspecting the database schema. This makes your models more DRY as you no longer need to duplicate NOT NULL, unique, numeric and varchar constraints on the model level."
   s.license     = 'MIT'
