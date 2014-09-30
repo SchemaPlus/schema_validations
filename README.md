@@ -5,8 +5,8 @@ definitions simpler and more DRY, by automatically defining validations based
 on the database schema.
 
 [![Gem Version](https://badge.fury.io/rb/schema_validations.png)](http://badge.fury.io/rb/schema_validations)
-[![Build Status](https://secure.travis-ci.org/lomba/schema_validations.png)](http://travis-ci.org/lomba/schema_validations)
-[![Dependency Status](https://gemnasium.com/lomba/schema_validations.png)](https://gemnasium.com/lomba/schema_validations)
+[![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_validations.png)](http://travis-ci.org/SchemaPlus/schema_validations)
+[![Dependency Status](https://gemnasium.com/SchemaPlus/schema_validations.png)](https://gemnasium.com/SchemaPlus/schema_validations)
 
 ## Overview
 
@@ -174,7 +174,3 @@ coverage/index.html -- it should be at 100% coverage.
 ## License
 
 This gem is released under the MIT license.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/lomba/schema_validations/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
