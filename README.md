@@ -108,7 +108,7 @@ config.
 SchemaValidations supports all combinations of:
 
 *   rails 3.2 or 4.0
-*   MRI ruby 1.9.3 or 2.0.0
+*   MRI ruby 1.9.3 or 2.1.3
 
 
 ## How do I know what it did?
