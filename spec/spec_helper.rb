@@ -8,8 +8,10 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rspec'
 require 'active_record'
 require 'schema_validations'
-require 'logger'
-require 'connection'
+require 'schema_dev/rspec'
+
+SchemaDev::Rspec.setup_db('sqlite3')
+
 
 # avoid deprecation warnings
 I18n.enforce_available_locales = true
