@@ -154,22 +154,16 @@ use case.
 
 ## Testing
 
-SchemaValidations is tested using rspec, sqlite3, and rvm, with some hackery
-to test against multiple versions of rails and ruby.  To run the full combo of
-tests, after you've forked & cloned:
+SchemaValidations is tested against the matrix of combinations.  To run the full combo of
+tests, after you've forked & cloned: 
 
     $ cd schema_validations
-    $ ./runspecs --install  # do this once to install gem dependencies for all versions (slow)
-    $ ./runspecs # as many times as you like
+    $ schema_dev bundle install
+    $ schema_dev rspec
 
-See `./runspecs --help` for other options.  You can also pick a specific
-version of rails and ruby to use, such as:
-    $ rvm use 1.9.2
-    $ export BUNDLE_GEMFILE=gemfiles/Gemfile.rails-3.1
-    $ rake spec
+For more info, see [schema_dev](https://github.com/SchemaPlus/schema_dev)
 
-If you're running ruby 1.9, code coverage results will be in
-coverage/index.html -- it should be at 100% coverage.
+Code coverage results will be in coverage/index.html -- it should be at 100% coverage.
 
 ## License
 
