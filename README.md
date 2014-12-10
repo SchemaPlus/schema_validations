@@ -105,11 +105,10 @@ config.
 
 ## Compatibility
 
-SchemaValidations supports all combinations of:
+SchemaValidations is tested on all combinations of:
 
-*   rails 3.2 or 4.0
-*   MRI ruby 1.9.3 or 2.1.3
-
+*   rails 3.2 or 4.1
+*   MRI ruby 1.9.3 and 2.1.3
 
 ## How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations
@@ -129,6 +128,10 @@ validations may not be defined at all if they were never needed for the logged
 use case.
 
 ## Release Notes
+
+### 1.0.1
+
+* Fix enums in Rails 4.1.  [@lowjoel](https://github.com/lowjoel)
 
 ### 1.0.0
 
