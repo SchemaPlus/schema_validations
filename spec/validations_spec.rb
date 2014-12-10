@@ -40,7 +40,7 @@ describe "Validations" do
     end
 
     it "should be valid with valid attributes" do
-      expect(Article.new(valid_attributes)).to be_valid
+      expect(Article.new(valid_article_attributes)).to be_valid
     end
 
     it "should validate content presence" do
@@ -68,15 +68,15 @@ describe "Validations" do
     end
 
     it "should validate title uniqueness" do
-      article1 = Article.create(valid_attributes)
-      article2 = Article.new(:title => valid_attributes[:title])
+      article1 = Article.create(valid_article_attributes)
+      article2 = Article.new(:title => valid_article_attributes[:title])
       expect(article2.error_on(:title).size).to eq(1)
       article1.destroy
     end
 
     it "should validate state uniqueness in scope of 'active' value" do
-      article1 = Article.create(valid_attributes)
-      article2 = Article.new(valid_attributes.merge(:title => 'SchemaPlus 2.0 released'))
+      article1 = Article.create(valid_article_attributes)
+      article2 = Article.new(valid_article_attributes.merge(:title => 'SchemaPlus 2.0 released'))
       expect(article2).not_to be_valid
       article2.toggle(:active)
       expect(article2).to be_valid
@@ -89,7 +89,7 @@ describe "Validations" do
     end
 
     it "should validate uniqueness of belongs_to association" do
-      article = Article.create(valid_attributes)
+      article = Article.create(valid_article_attributes)
       expect(article).to be_valid
       review1 = Review.create(:article => article, :author => 'michal')
       expect(review1).to be_valid
@@ -99,16 +99,6 @@ describe "Validations" do
 
     it "should validate associations with unmatched column and name" do
       expect(Review.new.error_on(:news_article).size).to eq(1)
-    end
-
-    def valid_attributes
-      {
-        :title => 'SchemaPlus released!',
-        :content => "Database matters. Get full use of it but don't write unecessary code. Get SchemaPlus!",
-        :state => 3,
-        :average_mark => 9.78,
-        :active => true
-      }
     end
 
   end
@@ -274,6 +264,15 @@ describe "Validations" do
 
   end
 
+  context "when used with enum" do
+    it "does not validate numericality" do
+      class Article < ActiveRecord::Base
+        enum :state => [:happy, :sad]
+      end
+      expect(Article.new(valid_article_attributes.merge(:state => :happy))).to be_valid
+    end
+  end if ActiveRecord::Base.respond_to? :enum
+
   protected
   def with_auto_validations(value = true)
     old_value = SchemaValidations.config.auto_create
@@ -313,5 +312,16 @@ describe "Validations" do
       end
     end
   end
+
+  def valid_article_attributes
+    {
+      :title => 'SchemaPlus released!',
+      :content => "Database matters. Get full use of it but don't write unecessary code. Get SchemaPlus!",
+      :state => 3,
+      :average_mark => 9.78,
+      :active => true
+    }
+  end
+
 
 end

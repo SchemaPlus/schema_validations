@@ -28,5 +28,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rspec")
   s.add_development_dependency("simplecov")
   s.add_development_dependency("simplecov-gem-profile")
+  s.add_development_dependency("database_cleaner")
 end
 

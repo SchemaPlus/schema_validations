@@ -9,9 +9,16 @@ require 'rspec'
 require 'active_record'
 require 'schema_validations'
 require 'schema_dev/rspec'
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
 
 SchemaDev::Rspec.setup_db
 
+RSpec.configure do |config|
+  config.before(:each) do
+    DatabaseCleaner.clean
+  end
+end
 
 # avoid deprecation warnings
 I18n.enforce_available_locales = true
