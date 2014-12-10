@@ -10,7 +10,7 @@ require 'active_record'
 require 'schema_validations'
 require 'schema_dev/rspec'
 
-SchemaDev::Rspec.setup_db('sqlite3')
+SchemaDev::Rspec.setup_db
 
 
 # avoid deprecation warnings

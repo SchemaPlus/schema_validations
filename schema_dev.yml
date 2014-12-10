@@ -4,3 +4,4 @@ ruby:
 rails:
   - 3.2
   - 4.0
+db: sqlite3
