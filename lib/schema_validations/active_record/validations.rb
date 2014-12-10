@@ -97,11 +97,11 @@ module SchemaValidations
 
           # Data-type validation
           if column.type == :integer
-            validate_logged :validates_numericality_of, name, :allow_nil => true, :only_integer => true
+            load_integer_column_validations(name, column)
           elsif column.number?
-            validate_logged :validates_numericality_of, name, :allow_nil => true
+            load_numeric_column_validations(name, column)
           elsif column.text? && column.limit
-            validate_logged :validates_length_of, name, :allow_nil => true, :maximum => column.limit
+            load_string_column_validations(name, column)
           end
 
           # NOT NULL constraints
@@ -116,6 +116,21 @@ module SchemaValidations
           # UNIQUE constraints
           add_uniqueness_validation(column) if column.unique?
         end
+      end
+
+      def load_integer_column_validations(name, column)
+        is_enum_column = respond_to?(:defined_enums) && defined_enums.has_key?(column.name)
+        unless is_enum_column
+          validate_logged :validates_numericality_of, name, :allow_nil => true, :only_integer => true
+        end
+      end
+
+      def load_numeric_column_validations(name, _)
+        validate_logged :validates_numericality_of, name, :allow_nil => true
+      end
+
+      def load_string_column_validations(name, column)
+        validate_logged :validates_length_of, name, :allow_nil => true, :maximum => column.limit
       end
 
       def load_association_validations #:nodoc:
