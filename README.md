@@ -131,7 +131,7 @@ use case.
 
 ### 1.0.1
 
-* Fix enums in Rails 4.1.  [@lowjoel](https://github.com/lowjoel)
+* Fix enums in Rails 4.1.  Thanks to [@lowjoel](https://github.com/lowjoel)
 
 ### 1.0.0
 
