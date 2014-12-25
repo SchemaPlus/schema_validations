@@ -4,9 +4,10 @@ SchemaValidations is an ActiveRecord extension that keeps your model class
 definitions simpler and more DRY, by automatically defining validations based
 on the database schema.
 
-[![Gem Version](https://badge.fury.io/rb/schema_validations.png)](http://badge.fury.io/rb/schema_validations)
-[![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_validations.png)](http://travis-ci.org/SchemaPlus/schema_validations)
-[![Dependency Status](https://gemnasium.com/SchemaPlus/schema_validations.png)](https://gemnasium.com/SchemaPlus/schema_validations)
+[![Gem Version](https://badge.fury.io/rb/schema_validations.svg)](http://badge.fury.io/rb/schema_validations)
+[![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_validations.svg)](http://travis-ci.org/SchemaPlus/schema_validations)
+[![Dependency Status](https://gemnasium.com/lomba/schema_validations.svg)](https://gemnasium.com/lomba/schema_validations)
+
 
 ## Overview
 
