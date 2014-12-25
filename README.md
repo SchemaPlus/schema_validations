@@ -6,6 +6,7 @@ on the database schema.
 
 [![Gem Version](https://badge.fury.io/rb/schema_validations.svg)](http://badge.fury.io/rb/schema_validations)
 [![Build Status](https://secure.travis-ci.org/SchemaPlus/schema_validations.svg)](http://travis-ci.org/SchemaPlus/schema_validations)
+[![Coverage Status](https://img.shields.io/coveralls/SchemaPlus/schema_validations.svg)](https://coveralls.io/r/SchemaPlus/schema_validations)
 [![Dependency Status](https://gemnasium.com/lomba/schema_validations.svg)](https://gemnasium.com/lomba/schema_validations)
 
 
