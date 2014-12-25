@@ -9,3 +9,4 @@ rvm:
 gemfile:
 - gemfiles/rails-3.2/Gemfile.sqlite3
 - gemfiles/rails-4.1/Gemfile.sqlite3
+script: bundle exec rake travis

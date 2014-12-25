@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency("schema_plus")
       
-  s.add_development_dependency("schema_dev", "~> 1.0")
+  s.add_development_dependency("schema_dev", "~> 1.2")
   s.add_development_dependency("rake")
   s.add_development_dependency("rdoc")
   s.add_development_dependency("rspec")
