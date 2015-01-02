@@ -133,6 +133,10 @@ use case.
 
 ## Release Notes
 
+### 1.1.0
+
+* Works with Rails 4.2.
+
 ### 1.0.1
 
 * Fix enums in Rails 4.1.  Thanks to [@lowjoel](https://github.com/lowjoel)
