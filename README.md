@@ -43,11 +43,19 @@ installing it your model is as simple as it can be.
 Validations are there but they are created by schema_validations under the
 hood.
 
+## Compatibility
+
+SchemaValidations is tested on all combinations of:
+
+*   rails 3.2, 4.1, and 4.2
+*   MRI ruby 1.9.3 and 2.1.5)'s
+config.
+
 ## Installation
 
 Simply add schema_validations to your Gemfile.
 
-    gem "schema_validations"
+    gem "schema_validations"            
 
 ### What if I want something special?
 
@@ -102,15 +110,9 @@ Data types:
 SchemaValidations uses the [schema_plus](http://rubygems.org/gems/schema_plus)
 gem for its schema queries.  That gem will by default auto-create foreign key
 constraints that you probably want -- but if you don't want them, you can
-disable them using [schema_plus](http://rubygems.org/gems/schema_plus)'s
-config.
+disable them using [schema_plus](http://rubygems.org/gems/schema_plus
 
-## Compatibility
 
-SchemaValidations is tested on all combinations of:
-
-*   rails 3.2 or 4.1
-*   MRI ruby 1.9.3 and 2.1.3
 
 ## How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations
