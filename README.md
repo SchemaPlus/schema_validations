@@ -55,7 +55,7 @@ config.
 
 Simply add schema_validations to your Gemfile.
 
-    gem "schema_validations"            
+    gem "schema_validations"
 
 ### What if I want something special?
 
@@ -147,7 +147,7 @@ use case.
 * No longer support Rails < 3.2 or Ruby < 1.9.3
 
 ### 0.2.2
-    
+
 * Rails 2.3 compatibility (check for Rails::Railties symbol).  thanks to https://github.com/thehappycoder
 
 ### 0.2.0
@@ -166,7 +166,7 @@ use case.
 ## Testing
 
 SchemaValidations is tested against the matrix of combinations.  To run the full combo of
-tests, after you've forked & cloned: 
+tests, after you've forked & cloned:
 
     $ cd schema_validations
     $ schema_dev bundle install
