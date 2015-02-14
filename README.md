@@ -110,7 +110,7 @@ Data types:
 SchemaValidations uses the [schema_plus](http://rubygems.org/gems/schema_plus)
 gem for its schema queries.  That gem will by default auto-create foreign key
 constraints that you probably want -- but if you don't want them, you can
-disable them using [schema_plus](http://rubygems.org/gems/schema_plus
+disable them using [schema_plus](http://rubygems.org/gems/schema_plus).
 
 
 
