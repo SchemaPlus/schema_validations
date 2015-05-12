@@ -100,8 +100,7 @@ module SchemaValidations
                      when respond_to?(:defined_enums) && defined_enums.has_key?(column.name) then :enum
                      when column.type == :integer then :integer
                      when column.number? then :numeric
-                     when column.respond_to?(:text?) && column.text? then :text
-                     when [:string, :text].include?(column.type) then :text
+                     when column.text? then :text
                      when column.type == :boolean then :boolean
                      end
 
