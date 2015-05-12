@@ -12,7 +12,7 @@ require 'schema_dev/rspec'
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 
-SchemaDev::Rspec.setup_db
+SchemaDev::Rspec.setup
 
 RSpec.configure do |config|
   config.before(:each) do
