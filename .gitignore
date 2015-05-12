@@ -22,6 +22,7 @@ pkg
 .rvmrc
 *.log
 tmp/
+Gemfile.local
 Gemfile.lock
 gemfiles/*.lock
 gemfiles/**/*.lock
