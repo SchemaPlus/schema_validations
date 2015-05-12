@@ -43,7 +43,7 @@ module SchemaValidations
     has_value :except, :default => [:created_at, :updated_at, :created_on, :updated_on]
 
     ##
-    # :attr_accessor: only_type
+    # :attr_accessor: except_type
     #
     # List of validation types to exclude from automatic validation.
     # Value is a single type, and array of types, or +nil+.  Default is +nil+.
