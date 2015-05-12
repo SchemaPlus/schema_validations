@@ -1,7 +1,5 @@
 ruby:
-  - 1.9.3
   - 2.1.5
 activerecord:
-  - 4.1
-  - 4.2.0
+  - 4.2.1
 db: sqlite3

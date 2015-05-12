@@ -105,15 +105,6 @@ Data types:
 | :float             | :validates ... :numericality => true                      |
 | :integer           | :validates ... :numericality => { :only_integer => true } |
 
-## Dependency
-
-SchemaValidations uses the [schema_plus](http://rubygems.org/gems/schema_plus)
-gem for its schema queries.  That gem will by default auto-create foreign key
-constraints that you probably want -- but if you don't want them, you can
-disable them using [schema_plus](http://rubygems.org/gems/schema_plus
-
-
-
 ## How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations
 defines, you can check the log file.  For every assocation that
