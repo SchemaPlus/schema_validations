@@ -34,9 +34,11 @@ describe "Validations" do
     end
 
     it "should create validations for introspection with validators_on" do
-      expect(Article.validators_on(:content).map{|v| v.class.name.demodulize}.uniq).to match_array(%W[
-        PresenceValidator
-      ])
+      expected = case
+                 when SchemaDev::Rspec::Helpers.mysql? then %W[PresenceValidator LengthValidator]
+                 else %W[PresenceValidator]
+                 end
+      expect(Article.validators_on(:content).map{|v| v.class.name.demodulize}.uniq).to match_array(expected)
     end
 
     it "should be valid with valid attributes" do
