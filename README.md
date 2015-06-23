@@ -106,11 +106,11 @@ Constraints:
 
 Data types:
 
-|         Type       |                      Validation                           |
-|--------------------|-----------------------------------------------------------|
-| :boolean           | :validates ... :inclusion => { :in => [true, false] }     |
-| :float             | :validates ... :numericality => true                      |
-| :integer           | :validates ... :numericality => { :only_integer => true } |
+|         Type       |                      Validation                                                                                |
+|--------------------|----------------------------------------------------------------------------------------------------------------|
+| :boolean           | :validates ... :inclusion => { :in => [true, false] }                                                          |
+| :float             | :validates ... :numericality => true                                                                           |
+| :integer           | :validates ... :numericality => { :only_integer => true, :greater_than_or_equal_to => ..., :less_than => ... } |
 
 ## How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations
