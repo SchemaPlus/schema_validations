@@ -20,6 +20,11 @@ describe "Validations" do
           belongs_to :news_article, :class_name => 'Article', :foreign_key => :article_id
           schema_validations :except => :content
         end
+
+        class ArticleReview < ActiveRecord::Base
+          belongs_to :article
+          belongs_to :review
+        end
       end
     end
 
@@ -103,6 +108,19 @@ describe "Validations" do
       expect(Review.new.error_on(:news_article).size).to eq(1)
     end
 
+    it "should not validate uniqueness when scope is absent" do
+      article_review_1 = ArticleReview.create(:article_id => 1, :review_id => nil)
+      expect(article_review_1).to be_valid
+
+      article_review_2 = ArticleReview.create(:article_id => 1, :review_id => nil)
+      expect(article_review_2).to be_valid
+
+      article_review_3 = ArticleReview.create(:article_id => nil, :review_id => 1)
+      expect(article_review_3).to be_valid
+
+      article_review_4 = ArticleReview.create(:article_id => nil, :review_id => 1)
+      expect(article_review_4).to be_valid
+    end
   end
 
   context "auto-created but changed" do
@@ -311,6 +329,11 @@ describe "Validations" do
         end
         add_index :reviews, :article_id, :unique => true
 
+        create_table :article_reviews, :force => true do |t|
+          t.integer :article_id
+          t.integer :review_id
+        end
+        add_index :article_reviews, [:article_id, :review_id], :unique => true
       end
     end
   end
