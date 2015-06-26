@@ -144,9 +144,14 @@ module SchemaValidations
 
       def add_uniqueness_validation(column) #:nodoc:
         scope = column.unique_scope.map(&:to_sym)
-        condition = :"#{column.name}_changed?"
         name = column.name.to_sym
-        validate_logged :validates_uniqueness_of, name, :scope => scope, :allow_nil => true, :if => condition
+        validate_logged :validates_uniqueness_of, name, :scope => scope, :allow_nil => true, :if => (proc do |record|
+          if scope.all? { |scope_sym| record.public_send(:"#{scope_sym}?") }
+            record.public_send(:"#{column.name}_changed?")
+          else
+            false
+          end
+        end)
       end
 
       def create_schema_validations? #:nodoc:
