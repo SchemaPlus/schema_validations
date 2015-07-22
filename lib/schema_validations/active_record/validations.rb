@@ -106,7 +106,7 @@ module SchemaValidations
 
           case datatype
           when :integer
-            validate_logged :validates_numericality_of, name, :allow_nil => true, :only_integer => true
+            load_integer_column_validations(name, column)
           when :numeric
             validate_logged :validates_numericality_of, name, :allow_nil => true
           when :text
@@ -125,6 +125,20 @@ module SchemaValidations
           # UNIQUE constraints
           add_uniqueness_validation(column) if column.unique?
         end
+      end
+
+      def load_integer_column_validations(name, column) # :nodoc:
+        options = { :allow_nil => true, :only_integer => true }
+
+        range = column.cast_type.send(:range)
+        options[:greater_than_or_equal_to] = range.begin
+        if range.exclude_end?
+          options[:less_than] = range.end
+        else
+          options[:less_than_or_equal_to] = range.end
+        end
+
+        validate_logged :validates_numericality_of, name, options
       end
 
       def load_association_validations #:nodoc:

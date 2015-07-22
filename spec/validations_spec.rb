@@ -66,6 +66,11 @@ describe "Validations" do
       expect(Article.new(:state => 1.23).error_on(:state).size).to eq(1)
     end
 
+    it "should validate the range of votes" do
+      expect(Article.new(votes: 2147483648).error_on(:votes).size).to eq(1)
+      expect(Article.new(votes: -2147483649).error_on(:votes).size).to eq(1)
+    end
+
     it "should validate average_mark numericality" do
       expect(Article.new(:average_mark => "high").error_on(:average_mark).size).to eq(1)
     end
@@ -315,6 +320,7 @@ describe "Validations" do
           t.string :title, :limit => 50
           t.text  :content, :null => false
           t.integer :state
+          t.integer :votes
           t.float   :average_mark, :null => false
           t.boolean :active, :null => false
         end
