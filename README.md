@@ -130,6 +130,10 @@ use case.
 
 ## Release Notes
 
+### 1.3.0
+
+* Add range checks to integer validations.  Thanks to [@lowjoel](https://github.com/lowjoel)
+
 ### 1.2.0
 
 * No longer pull in schema_plus's auto-foreign key behavior. Limited to AR >= 4.2.1
