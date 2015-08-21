@@ -176,7 +176,7 @@ module SchemaValidations
         if _filter_validation(method, arg)
           msg = "[schema_validations] #{self.name}.#{method} #{arg.inspect}"
           msg += ", #{opts.inspect[1...-1]}" if opts.any?
-          logger.info msg
+          logger.debug msg
           send method, arg, opts
         end
       end
