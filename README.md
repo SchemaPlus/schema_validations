@@ -114,7 +114,7 @@ Data types:
 ## How do I know what it did?
 If you're curious (or dubious) about what validations SchemaValidations
 defines, you can check the log file.  For every assocation that
-SchemaValidations defines, it generates an debug entry such as
+SchemaValidations defines, it generates a debug entry in the log such as
 
     [schema_validations] Article.validates_length_of :title, :allow_nil=>true, :maximum=>50
 
