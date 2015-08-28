@@ -130,6 +130,10 @@ use case.
 
 ## Release Notes
 
+### 1.3.1
+
+* Change log level from 'info' to 'debug', since there's no need to clutter production logs with this sort of development info.  Thanks to [@obduk](https://github.com/obduk)
+
 ### 1.3.0
 
 * Add range checks to integer validations.  Thanks to [@lowjoel](https://github.com/lowjoel)
