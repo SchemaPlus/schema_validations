@@ -320,6 +320,41 @@ describe "Validations" do
     end
   end if ActiveRecord::Base.respond_to? :enum
 
+  context "with belongs_to and has_many" do
+    before(:each) do
+      ActiveRecord::Schema.define do
+        create_table :parents, :force => true do |t|
+          t.string :name
+        end
+
+        create_table :children, :force => true do |t|
+          t.integer :parent_id, :null => false
+          t.string :name
+        end
+      end
+
+      with_auto_validations do
+        class Parent < ActiveRecord::Base
+          has_many :children, :dependent => :destroy
+        end
+
+        class Child < ActiveRecord::Base
+          belongs_to :parent
+        end
+      end
+    end
+
+    it "should not break association assignment" do
+      child = Child.new
+      expect(child.error_on(:parent).size).to eq(1)  # confirm validates_presence_of
+
+      parent = Parent.new
+      parent.children << child
+      expect { parent.save! }.to_not raise_error
+      expect { child.save! }.to_not raise_error
+    end
+  end
+
   protected
   def with_auto_validations(value = true)
     old_value = SchemaValidations.config.auto_create
