@@ -15,8 +15,12 @@ DatabaseCleaner.strategy = :truncation
 SchemaDev::Rspec.setup
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.around(:each) do |example|
     DatabaseCleaner.clean
+    remove_all_models
+    ActiveRecord::Migration.suppress_messages do
+      example.run
+    end
   end
 end
 

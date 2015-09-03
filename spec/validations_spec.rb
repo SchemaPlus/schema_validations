@@ -2,12 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Validations" do
 
-  before(:all) do
+  before(:each) do
     define_schema
-  end
-
-  after(:each) do
-    remove_all_models
   end
 
   context "auto-created" do
@@ -312,35 +308,32 @@ describe "Validations" do
   end
 
   def define_schema
-    ActiveRecord::Migration.suppress_messages do
-      ActiveRecord::Schema.define do
-        connection.tables.each do |table| drop_table table end
+    ActiveRecord::Schema.define do
 
-        create_table :articles, :force => true do |t|
-          t.string :title, :limit => 50
-          t.text  :content, :null => false
-          t.integer :state
-          t.integer :votes
-          t.float   :average_mark, :null => false
-          t.boolean :active, :null => false
-        end
-        add_index :articles, :title, :unique => true
-        add_index :articles, [:state, :active], :unique => true
-
-        create_table :reviews, :force => true do |t|
-          t.integer :article_id, :null => false
-          t.string :author, :null => false
-          t.string :content, :limit => 200
-          t.string :type
-        end
-        add_index :reviews, :article_id, :unique => true
-
-        create_table :article_reviews, :force => true do |t|
-          t.integer :article_id
-          t.integer :review_id
-        end
-        add_index :article_reviews, [:article_id, :review_id], :unique => true
+      create_table :articles, :force => true do |t|
+        t.string :title, :limit => 50
+        t.text  :content, :null => false
+        t.integer :state
+        t.integer :votes
+        t.float   :average_mark, :null => false
+        t.boolean :active, :null => false
       end
+      add_index :articles, :title, :unique => true
+      add_index :articles, [:state, :active], :unique => true
+
+      create_table :reviews, :force => true do |t|
+        t.integer :article_id, :null => false
+        t.string :author, :null => false
+        t.string :content, :limit => 200
+        t.string :type
+      end
+      add_index :reviews, :article_id, :unique => true
+
+      create_table :article_reviews, :force => true do |t|
+        t.integer :article_id
+        t.integer :review_id
+      end
+      add_index :article_reviews, [:article_id, :review_id], :unique => true
     end
   end
 
