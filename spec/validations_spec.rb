@@ -320,6 +320,64 @@ describe "Validations" do
     end
   end if ActiveRecord::Base.respond_to? :enum
 
+  context 'with case sensitive options' do
+    before do
+      allow_any_instance_of(ActiveRecord::ConnectionAdapters::IndexDefinition).to receive(:case_sensitive?).and_return(false)
+    end
+
+    context 'without scope' do
+      before do
+        ActiveRecord::Schema.define do
+          create_table :books, :force => true do |t|
+            t.string :title
+          end
+
+          add_index :books, :title, :unique => true
+        end
+
+        with_auto_validations do
+          class Book < ActiveRecord::Base; end
+        end
+      end
+
+      it "should validate the uniqueness in a case insensitive manner" do
+        mixed_case_title = 'Schema Validations'
+        Book.create(title: mixed_case_title)
+
+        expect(Book.new(title: mixed_case_title)).not_to be_valid
+        expect(Book.new(title: mixed_case_title.downcase)).not_to be_valid
+      end
+    end
+
+    context 'within a scope' do
+      before do
+        ActiveRecord::Schema.define do
+          create_table :folders, :force => true do |t|
+            t.integer :parent_id
+            t.string :name
+          end
+
+          add_index :folders, [:parent_id, :name], :unique => true
+        end
+
+        with_auto_validations do
+          class Folder < ActiveRecord::Base
+            belongs_to :parent, class_name: Folder.name
+          end
+        end
+      end
+
+      it "should validate the uniqueness in a case insensitive manner" do
+        mixed_case_name = 'Schema Validations'
+        parent_folder = Folder.create
+        Folder.create(:parent => parent_folder, :name => mixed_case_name)
+
+        expect(Folder.new(:parent => parent_folder, :name => mixed_case_name)).not_to be_valid
+        expect(Folder.new(:parent => parent_folder, :name => mixed_case_name.downcase)).not_to be_valid
+      end
+    end
+  end
+
   protected
   def with_auto_validations(value = true)
     old_value = SchemaValidations.config.auto_create
