@@ -21,6 +21,7 @@ describe "Validations" do
         t.string :author, :null => false
         t.string :content, :limit => 200
         t.string :type
+        t.timestamps :null => false
       end
       add_index :reviews, :article_id, :unique => true
 
