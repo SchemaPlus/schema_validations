@@ -159,13 +159,27 @@ module SchemaValidations
       def add_uniqueness_validation(column) #:nodoc:
         scope = column.unique_scope.map(&:to_sym)
         name = column.name.to_sym
-        validate_logged :validates_uniqueness_of, name, :scope => scope, :allow_nil => true, :if => (proc do |record|
+
+        options = {}
+        options[:scope] = scope if scope.any?
+        options[:allow_nil] = true
+        options[:case_sensitive] = false if has_case_insensitive_index?(column, scope)
+        options[:if] = (proc do |record|
           if scope.all? { |scope_sym| record.public_send(:"#{scope_sym}?") }
             record.public_send(:"#{column.name}_changed?")
           else
             false
           end
         end)
+
+        validate_logged :validates_uniqueness_of, name, options
+      end
+
+      def has_case_insensitive_index?(column, scope)
+        indexed_columns = (scope + [column.name]).map(&:to_sym).sort
+        index = column.indexes.select { |i| i.unique && i.columns.map(&:to_sym).sort == indexed_columns }.first
+
+        index && index.respond_to?(:case_sensitive?) && !index.case_sensitive?
       end
 
       def create_schema_validations? #:nodoc:
