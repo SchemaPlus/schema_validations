@@ -131,6 +131,10 @@ use case.
 
 ## Release Notes
 
+### 1.4.0
+
+* Add support for case-insensitive uniqueness.  Thanks to [allenwq](https://github.com/allenwq)
+
 ### 1.3.1
 
 * Change log level from 'info' to 'debug', since there's no need to clutter production logs with this sort of development info.  Thanks to [@obduk](https://github.com/obduk)
