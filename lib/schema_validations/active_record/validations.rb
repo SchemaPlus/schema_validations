@@ -55,7 +55,7 @@ module SchemaValidations
       def schema_validations(options={})
         except = options.delete(:except)
         @schema_validations_config = SchemaValidations.config.merge({:auto_create => true}.merge(options))
-        @schema_validations_config.except += [except].flatten if except
+        @schema_validations_config.whitelist += Array(except) if except
       end
 
       def schema_validations_config # :nodoc:
@@ -204,7 +204,7 @@ module SchemaValidations
           types << match[1].to_sym
         end
         return false if config.only        and not Array.wrap(config.only).include?(name)
-        return false if config.except      and     Array.wrap(config.except).include?(name)
+        return false if config.whitelist      and     Array.wrap(config.whitelist).include?(name)
         return false if config.only_type   and not (Array.wrap(config.only_type) & types).any?
         return false if config.except_type and     (Array.wrap(config.except_type) & types).any?
         return true

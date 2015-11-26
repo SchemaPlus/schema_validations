@@ -36,11 +36,11 @@ module SchemaValidations
     has_value :only, :default => nil
 
     ##
-    # :attr_accessor: except
+    # :attr_accessor: whitelist
     #
     # List of field names to exclude from automatic validation.
     # Value is a single name, an array of names, or +nil+.  Default is <tt>[:created_at, :updated_at, :created_on, :updated_on]</tt>.
-    has_value :except, :default => [:created_at, :updated_at, :created_on, :updated_on]
+    has_value :whitelist, :default => [:created_at, :updated_at, :created_on, :updated_on]
 
     ##
     # :attr_accessor: except_type
