@@ -176,6 +176,18 @@ describe "Validations" do
       expect(@review.error_on(:author).size).to eq(1)
     end
 
+    it "shouldn't validate the fields in default whitelist" do
+      Review.schema_validations :except => :content
+      expect(Review.new.error_on(:updated_at).size).to eq(0)
+      expect(Review.new.error_on(:created_at).size).to eq(0)
+    end
+
+    it "shouldn't validate the fields in whitelist" do
+      Review.schema_validations :except => :content, whitelist: [:updated_at]
+      expect(Review.new.error_on(:updated_at).size).to eq(0)
+      expect(Review.new.error_on(:created_at).size).to eq(1)
+    end
+
     it "shouldn't validate types passed to :except_type option using full validation" do
       Review.schema_validations :except_type => :validates_length_of
       @review = Review.new(:content => @too_big_content)
