@@ -52,10 +52,8 @@ module SchemaValidations
       #     end
       #
       #
-      def schema_validations(options={})
-        except = options.delete(:except)
-        @schema_validations_config = SchemaValidations.config.merge({:auto_create => true}.merge(options))
-        @schema_validations_config.whitelist += Array(except) if except
+      def schema_validations(opts={})
+        @schema_validations_config = SchemaValidations.config.merge({:auto_create => true}.merge(opts))
       end
 
       def schema_validations_config # :nodoc:
