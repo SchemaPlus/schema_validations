@@ -43,6 +43,21 @@ module SchemaValidations
     has_value :whitelist, :default => [:created_at, :updated_at, :created_on, :updated_on]
 
     ##
+    # :attr_accessor: except
+    #
+    # List of field names to exclude from automatic validation.
+    # Value is a single name, and array of names, or +nil+.  Default is +nil+.
+    has_value :except, :default => nil
+
+    ##
+    # :attr_accessor: whitelist_type
+    #
+    # List of validation types to exclude from automatic validation.
+    # Value is a single type, and array of types, or +nil+.  Default is +nil+.
+    # A type is specified as, e.g., +:validates_presence_of+ or simply +:presence+.
+    has_value :whitelist_type, :default => nil
+
+    ##
     # :attr_accessor: except_type
     #
     # List of validation types to exclude from automatic validation.
