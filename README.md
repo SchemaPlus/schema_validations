@@ -175,6 +175,12 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.0.0
+
+This major version is backwards compatible for most uses.  Only those who specified a per-model `:except` clause would be affected.
+
+* Add whitelist configuration option (thanks to [@allenwq](https://github.com/allenwq)). Previously, overriding `:except` per-model would clobber the default values.  E.g. using the documented example `except: :mail` would accidentally cause validations to be issued `updated_at` to be validated.  Now `:except` works more naturally.  This is however technically a breaking change, hence the version bump.
+
 ### 1.4.0
 
 * Add support for case-insensitive uniqueness.  Thanks to [allenwq](https://github.com/allenwq)
