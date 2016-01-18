@@ -201,10 +201,12 @@ module SchemaValidations
         if match = macro.to_s.match(/^validates_(.*)_of$/)
           types << match[1].to_sym
         end
-        return false if config.only        and not Array.wrap(config.only).include?(name)
-        return false if config.except      and     Array.wrap(config.except).include?(name)
-        return false if config.only_type   and not (Array.wrap(config.only_type) & types).any?
-        return false if config.except_type and     (Array.wrap(config.except_type) & types).any?
+        return false if config.only           and not Array.wrap(config.only).include?(name)
+        return false if config.except         and     Array.wrap(config.except).include?(name)
+        return false if config.whitelist      and     Array.wrap(config.whitelist).include?(name)
+        return false if config.only_type      and not (Array.wrap(config.only_type) & types).any?
+        return false if config.except_type    and     (Array.wrap(config.except_type) & types).any?
+        return false if config.whitelist_type and     (Array.wrap(config.whitelist_type) & types).any?
         return true
       end
 

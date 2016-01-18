@@ -21,6 +21,7 @@ describe "Validations" do
         t.string :author, :null => false
         t.string :content, :limit => 200
         t.string :type
+        t.timestamps :null => false
       end
       add_index :reviews, :article_id, :unique => true
 
@@ -173,6 +174,18 @@ describe "Validations" do
       @review = Review.new(:content => @too_big_content)
       expect(@review.errors_on(:content).size).to eq(0)
       expect(@review.error_on(:author).size).to eq(1)
+    end
+
+    it "shouldn't validate the fields in default whitelist" do
+      Review.schema_validations :except => :content
+      expect(Review.new.error_on(:updated_at).size).to eq(0)
+      expect(Review.new.error_on(:created_at).size).to eq(0)
+    end
+
+    it "shouldn't validate the fields in whitelist" do
+      Review.schema_validations :except => :content, whitelist: [:updated_at]
+      expect(Review.new.error_on(:updated_at).size).to eq(0)
+      expect(Review.new.error_on(:created_at).size).to eq(1)
     end
 
     it "shouldn't validate types passed to :except_type option using full validation" do

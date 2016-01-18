@@ -73,6 +73,12 @@ SchemaValidations::ActiveRecord::schema_validations, such as:
       schema_validations :except => :email
       validates :email, :presence => true, :length => { :in => 5..30 }
     end
+    
+There is also an whitelist option, by default `:created_at`, `:updated_at`, `:created_on`, `:updated_on` are whitelisted. You can also specify it and change this behaviour in your model.
+
+    class User < ActiveRecord::Base
+      schema_validations :whitelist => [] # In this case, every field will be validated.
+    end
 
 See SchemaValidations::Config for the available options.
 
