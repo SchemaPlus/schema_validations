@@ -63,41 +63,79 @@ Simply add schema_validations to your Gemfile.
 
     gem "schema_validations"
 
-### What if I want something special?
+## What if I want something special?
 
-SchemaValidations is highly customizable. You can configure behavior globally
-via SchemaValidations.setup or per-model via
-SchemaValidations::ActiveRecord::schema_validations, such as:
+SchemaValidations' behavior can be configured globally and per-model.
 
-    class User < ActiveRecord::Base
-      schema_validations :except => :email
-      validates :email, :presence => true, :length => { :in => 5..30 }
-    end
+### Global configuration
+
+In an initializer, such as `config/initializers/schema_validations.rb`, you can set any of these options.  The default values are shown.
+
+```ruby
+SchemaValidations.setup do |config|
+
+    # Whether to automatically create validations based on database constraints.
+    # (Can be set false globally to disable the gem by default, and set true per-model to enable.)
+    config.auto_create = true
     
-There is also an whitelist option, by default `:created_at`, `:updated_at`, `:created_on`, `:updated_on` are whitelisted. You can also specify it and change this behaviour in your model.
+    # Restricts the set of field names to include in automatic validation.
+    # Value is a single name, an array of names, or nil.
+    config.only = nil
 
+    # Restricts the set of validation types to include in automatic validation.
+    # Value is a single type, an array of types, or nil.
+    # A type is specified as, e.g., `:validates_presence_of` or simply `:presence`.
+    config.only_type = nil
+    
+    # A list of field names to exclude from automatic validation.
+    # Value is a single name, an array of names, or nil.
+    # (Providing a value per-model will completely replace a globally-configured list)
+    config.except = nil
+    
+    # A list of validation types to exclude from automatic validation.
+    # Value is a single type, an array of types, or nil.
+    # (Providing a value per-model will completely replace a globally-configured list)
+    config.except_type = nil
+       
+    # The base set of field names to always exclude from automatic validation.
+    # Value is a single name, an array of names, or nil.
+    # (This whitelist applies after all other considerations, global or per-model)
+    config.whitelist = [:created_at, :updated_at, :created_on, :updated_on]
+       
+    # The base set of validation types to always exclude from automatic validation.
+    # Value is a single type, an array of types, or nil.
+    # (This whitelist applies after all other considerations, global or per-model)
+    config.whitelist_type = nil
+end
+```    
+
+### Per-model validation
+
+You can override the global configuration per-model, using the `schema_validations` class method.  All global configuration options are available as keyword options.  For example:
+
+##### Disable per model:
+```ruby
     class User < ActiveRecord::Base
-      schema_validations :whitelist => [] # In this case, every field will be validated.
+      schema_validations auto_create: false
     end
+```
 
-See SchemaValidations::Config for the available options.
-
-### This seems cool, but I'm worried about too much automagic
-
-You can globally turn off automatic creation in
-`config/initializers/schema_validations.rb`:
-
-    SchemaValidations.setup do |config|
-      config.auto_create = false
+##### Use a custom validation rather than schema_validations automatic default:
+```ruby
+    class User < ActiveRecord::Base
+      schema_validations except: :email  # don't create default validation for email
+      validates :email, presence: true, length: { in: 5..30 }
     end
+```
 
-Then in any model where you want automatic validations, just do
+##### Include validations every field, without a whitelist:
 
-    class Post < ActiveRecord::Base
-      schema_validations
+```ruby
+    class User < ActiveRecord::Base
+      schema_validations :whitelist => nil
     end
+```
 
-You can also pass options as per above.
 
 ## Which validations are covered?
 
