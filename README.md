@@ -185,6 +185,10 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.0.1
+
+* Bug fix: Don't crash when optimistic locking is in use (#8)
+
 ### 2.0.0
 
 This major version is backwards compatible for most uses.  Only those who specified a per-model `:except` clause would be affected.
