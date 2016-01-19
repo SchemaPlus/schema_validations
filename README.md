@@ -17,24 +17,30 @@ columns, keeping your model class definitions simple and DRY.  That's great
 for simple data columns, but where it falls down is when your table contains
 constraints.
 
-    create_table :users do |t|
-      t.string :email, :null => false, :limit => 30
-      t.boolean :confirmed, :null => false
-    end
+```ruby
+create_table :users do |t|
+    t.string :email, null: false, limit: 30
+    t.boolean :confirmed, null: false
+end
+```
 
-In that case the constraints `:null => false`, `:limit => 30` and `:boolean` must be validated on the model level, to avoid ugly database exceptions:
+In that case the constraints `null: false`, `limit: 30` and `:boolean` must be validated on the model level, to avoid ugly database exceptions:
 
-    class User < ActiveRecord::Base
-      validates :email, :presence => true, :length => { :maximum => 30 }
-      validates :confirmed, :presence => true, :inclusion => { :in => [true, false] }
-    end
+```ruby
+class User < ActiveRecord::Base
+    validates :email, presence: true, length: { maximum: 30 }
+    validates :confirmed, presence: true, inclusion: { in: [true, false] }
+end
+```
 
 ...which isn't the most DRY approach.
 
 SchemaValidations aims to DRY up your models, doing that boring work for you. It inspects the database and automatically creates validations based on the schema. After installing it your model is as simple as it can be.
 
-    class User < ActiveRecord::Base
-    end
+```ruby
+class User < ActiveRecord::Base
+end
+```
 
 Validations are there but they are created by schema_validations under the
 hood.
@@ -43,26 +49,28 @@ hood.
 
 Simply add schema_validations to your Gemfile.
 
-    gem "schema_validations"
+```ruby
+gem "schema_validations"
+```
     
 ## Which validations are covered?
 
 Constraints:
 
-|      Constraint     |                     Validation                           |
-|---------------------|----------------------------------------------------------|
-| `:null => false      | validates ... :presence => true                          |
-| :limit => 100       | validates ... :length => { :maximum => 100 }             |
-| :unique => true     | validates ... :uniqueness => true                        |
-| :unique => true, :case_sensitive => false <br>(If [schema_plus_pg_indexes](https://github.com/SchemaPlus/schema_plus_pg_indexes) is also in use) | validates ... :uniqueness => { :case_sensitive => false } |
+|      Constraint     |                     Validation                    |
+|---------------------|---------------------------------------------------|
+| `null: false`    | `validates ... presence: true`                       |
+| `limit: 100`     | `validates ... length: { maximum: 100 }`             |
+| `unique: true`   | `validates ... uniqueness: true`                     |
+| `unique: true, case_sensitive: false` <br>(If [schema_plus_pg_indexes](https://github.com/SchemaPlus/schema_plus_pg_indexes) is also in use) | `validates ... uniqueness: { case_sensitive: false }` |
 
 Data types:
 
-|         Type       |                      Validation                                                                                |
-|--------------------|----------------------------------------------------------------------------------------------------------------|
-| :boolean           | :validates ... :inclusion => { :in => [true, false] }                                                          |
-| :float             | :validates ... :numericality => true                                                                           |
-| :integer           | :validates ... :numericality => { :only_integer => true, :greater_than_or_equal_to => ..., :less_than => ... } |
+|         Type       |                      Validation                                                                      |
+|--------------------|------------------------------------------------------------------------------------------------------|
+| `:boolean`         | `:validates ... inclusion: { in: [true, false] }`                                                    |
+| `:float`           | `:validates ... numericality: true`                                                                  |
+| `:integer`         | `:validates ... numericality: { only_integer: true, greater_than_or_equal_to: ..., less_than: ... }` |
 
 
 ## What if I want something special?
@@ -117,25 +125,25 @@ You can override the global configuration per-model, using the `schema_validatio
 
 ##### Disable per model:
 ```ruby
-    class User < ActiveRecord::Base
-      schema_validations auto_create: false
-    end
+class User < ActiveRecord::Base
+    schema_validations auto_create: false
+end
 ```
 
 ##### Use a custom validation rather than schema_validations automatic default:
 ```ruby
-    class User < ActiveRecord::Base
-      schema_validations except: :email  # don't create default validation for email
-      validates :email, presence: true, length: { in: 5..30 }
-    end
+class User < ActiveRecord::Base
+    schema_validations except: :email  # don't create default validation for email
+    validates :email, presence: true, length: { in: 5..30 }
+end
 ```
 
 ##### Include validations every field, without a whitelist:
 
 ```ruby
-    class User < ActiveRecord::Base
-      schema_validations :whitelist => nil
-    end
+class User < ActiveRecord::Base
+    schema_validations whitelist: nil
+end
 ```
 
 
@@ -145,7 +153,9 @@ If you're curious (or dubious) about what validations SchemaValidations
 defines, you can check the log file.  For every assocation that
 SchemaValidations defines, it generates a debug entry in the log such as
 
-    [schema_validations] Article.validates_length_of :title, :allow_nil=>true, :maximum=>50
+```
+[schema_validations] Article.validates_length_of :title, :allow_nil=>true, :maximum=>50
+```
 
 which shows the exact validation definition call.
 
