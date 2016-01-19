@@ -3,6 +3,7 @@ require 'valuable'
 require 'schema_plus_columns'
 require 'schema_validations/version'
 require 'schema_validations/active_record/validations'
+require 'schema_validations/active_record/type'
 require 'schema_validations/railtie' if defined?(Rails::Railtie)
 
 module SchemaValidations
@@ -112,6 +113,7 @@ module SchemaValidations
     return if @inserted
     @inserted = true
     ::ActiveRecord::Base.extend SchemaValidations::ActiveRecord::Validations
+    ::ActiveRecord::Type::Integer.prepend SchemaValidations::ActiveRecord::Type::Integer
   end
 
 end

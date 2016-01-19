@@ -391,6 +391,22 @@ describe "Validations" do
     end
   end
 
+  context 'with optimistic locking' do
+    before do
+      ActiveRecord::Schema.define do
+        create_table :optimistics, :force => true do |t|
+          t.integer :lock_version
+        end
+      end
+      with_auto_validations do
+        class Optimistic < ActiveRecord::Base; end
+      end
+    end
+    it 'should not crash' do
+      expect(Optimistic.new).to be_valid
+    end
+  end
+
   protected
   def with_auto_validations(value = true)
     old_value = SchemaValidations.config.auto_create
