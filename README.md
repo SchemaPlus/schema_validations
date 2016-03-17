@@ -185,6 +185,10 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.0.2
+
+* Use schema_monkey rather than Railties
+
 ### 2.0.1
 
 * Bug fix: Don't crash when optimistic locking is in use (#8)
