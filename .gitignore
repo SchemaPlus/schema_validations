@@ -17,6 +17,7 @@ tmtags
 coverage
 rdoc
 pkg
+.byebug_history
 
 ## PROJECT::SPECIFIC
 .rvmrc
