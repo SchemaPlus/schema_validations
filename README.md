@@ -186,6 +186,10 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.1.0
+
+* Added :decimal range validation.  Thanks to [@felixbuenemann](https://github.com/felixbuenemann)
+
 ### 2.0.2
 
 * Use schema_monkey rather than Railties
