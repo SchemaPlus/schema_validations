@@ -12,6 +12,7 @@ describe "Validations" do
         t.integer :votes
         t.float   :average_mark, :null => false
         t.boolean :active, :null => false
+        t.decimal :rating, :precision => 2, :scale => 1
       end
       add_index :articles, :title, :unique => true
       add_index :articles, [:state, :active], :unique => true
@@ -92,6 +93,11 @@ describe "Validations" do
     it "should validate the range of votes" do
       expect(Article.new(votes: 2147483648).error_on(:votes).size).to eq(1)
       expect(Article.new(votes: -2147483649).error_on(:votes).size).to eq(1)
+    end
+
+    it "should validate the range of rating" do
+      expect(Article.new(rating: 10).error_on(:rating).size).to eq(1)
+      expect(Article.new(rating: -10).error_on(:rating).size).to eq(1)
     end
 
     it "should validate average_mark numericality" do
