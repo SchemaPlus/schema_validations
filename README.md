@@ -186,9 +186,13 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.1.1
+
+* Bug fix for `:decimal` when `precision` is nil (#37)
+
 ### 2.1.0
 
-* Added :decimal range validation.  Thanks to [@felixbuenemann](https://github.com/felixbuenemann)
+* Added `:decimal` range validation.  Thanks to [@felixbuenemann](https://github.com/felixbuenemann)
 
 ### 2.0.2
 
