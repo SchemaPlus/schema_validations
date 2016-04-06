@@ -108,8 +108,10 @@ module SchemaValidations
             when :integer
               load_integer_column_validations(name, column)
             when :decimal
-              limit = 10 ** (column.precision - column.scale)
-              validate_logged :validates_numericality_of, name, :allow_nil => true, :greater_than => -limit, :less_than => limit
+              if column.precision
+                limit = 10 ** (column.precision - (column.scale || 0))
+                validate_logged :validates_numericality_of, name, :allow_nil => true, :greater_than => -limit, :less_than => limit
+              end
             when :numeric
               validate_logged :validates_numericality_of, name, :allow_nil => true
             when :text
