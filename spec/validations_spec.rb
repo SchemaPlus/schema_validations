@@ -12,7 +12,9 @@ describe "Validations" do
         t.integer :votes
         t.float   :average_mark, :null => false
         t.boolean :active, :null => false
-        t.decimal :rating, :precision => 2, :scale => 1
+        t.decimal :max10, :precision => 2, :scale => 1
+        t.decimal :arbitrary, :precision => nil, :scale => nil
+        t.decimal :max100, :precision => 2, :scale => nil
       end
       add_index :articles, :title, :unique => true
       add_index :articles, [:state, :active], :unique => true
@@ -95,9 +97,20 @@ describe "Validations" do
       expect(Article.new(votes: -2147483649).error_on(:votes).size).to eq(1)
     end
 
-    it "should validate the range of rating" do
-      expect(Article.new(rating: 10).error_on(:rating).size).to eq(1)
-      expect(Article.new(rating: -10).error_on(:rating).size).to eq(1)
+    it "should validate the range of decimal precision with scale" do
+      expect(Article.new(max10: 10).error_on(:max10).size).to eq(1)
+      expect(Article.new(max10: 5).error_on(:max10).size).to eq(0)
+      expect(Article.new(max10: -10).error_on(:max10).size).to eq(1)
+    end
+    
+    it "should validate the range of decimal precision without scale" do
+      expect(Article.new(max100: 100).error_on(:max100).size).to eq(1)
+      expect(Article.new(max100: 50).error_on(:max100).size).to eq(0)
+      expect(Article.new(max100: -100).error_on(:max100).size).to eq(1)
+    end
+
+    it "should not validate the range of arbitrary decimal" do
+      expect(Article.new(arbitrary: Float::MAX).error_on(:arbitrary).size).to eq(0)
     end
 
     it "should validate average_mark numericality" do
