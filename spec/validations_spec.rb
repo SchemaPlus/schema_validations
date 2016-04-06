@@ -109,7 +109,7 @@ describe "Validations" do
       expect(Article.new(max100: -100).error_on(:max100).size).to eq(1)
     end
 
-    it "should not validate the range of arbitrary decimal" do
+    it "should not validate the range of arbitrary decimal", :skip => :mysql do  # mysql provides a default precision
       expect(Article.new(arbitrary: Float::MAX).error_on(:arbitrary).size).to eq(0)
     end
 
