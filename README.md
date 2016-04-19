@@ -62,7 +62,7 @@ Constraints:
 | `null: false`    | `validates ... presence: true`                       |
 | `limit: 100`     | `validates ... length: { maximum: 100 }`             |
 | `unique: true`   | `validates ... uniqueness: true`                     |
-| `unique: true, case_sensitive: false` <br>(If [schema_plus_pg_indexes](https://github.com/SchemaPlus/schema_plus_pg_indexes) is also in use) | `validates ... uniqueness: { case_sensitive: false }` |
+| `unique: true, case_sensitive: false` <br>(Requires [schema_plus_pg_indexes](https://github.com/SchemaPlus/schema_plus_pg_indexes) for PostgreSQL) | `validates ... uniqueness: { case_sensitive: false }` |
 
 Data types:
 
