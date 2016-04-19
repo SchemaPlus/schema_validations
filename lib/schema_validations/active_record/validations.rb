@@ -182,7 +182,7 @@ module SchemaValidations
         end
 
         def column_is_case_insensitive?(column)
-          column.respond_to?(:case_sensitive?) && ! column.case_sensitive?
+          column.respond_to?(:collation) && column.respond_to?(:case_sensitive?) && ! column.case_sensitive?
         end
 
         def has_case_insensitive_index?(column, scope)
