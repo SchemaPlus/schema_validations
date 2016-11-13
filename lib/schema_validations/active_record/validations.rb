@@ -99,8 +99,8 @@ module SchemaValidations
                        when respond_to?(:defined_enums) && defined_enums.has_key?(column.name) then :enum
                        when column.type == :integer then :integer
                        when column.type == :decimal then :decimal
-                       when column.number? then :numeric
-                       when column.text? then :text
+                       when column.type == :float   then :numeric
+                       when column.type == :text || column.type == :string then :text
                        when column.type == :boolean then :boolean
                        end
 
@@ -133,15 +133,15 @@ module SchemaValidations
         end
 
         def load_integer_column_validations(name, column) # :nodoc:
-          options = { :allow_nil => true, :only_integer => true }
+          integer_range = ::ActiveRecord::Type::Integer.new.range
+          # The Ruby Range object does not support excluding the beginning of a Range,
+          # so we always include :greater_than_or_equal_to
+          options = { :allow_nil => true, :only_integer => true, greater_than_or_equal_to: integer_range.begin }
 
-          if range = column.cast_type.try(:range)
-            options[:greater_than_or_equal_to] = range.begin
-            if range.exclude_end?
-              options[:less_than] = range.end
-            else
-              options[:less_than_or_equal_to] = range.end
-            end
+          if integer_range.exclude_end?
+            options[:less_than] = integer_range.end
+          else
+            options[:less_than_or_equal_to] = integer_range.end
           end
 
           validate_logged :validates_numericality_of, name, options
