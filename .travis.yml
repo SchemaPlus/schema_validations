@@ -7,6 +7,8 @@ sudo: false
 rvm:
 - 2.3.1
 gemfile:
+- gemfiles/activerecord-4.2/Gemfile.postgresql
+- gemfiles/activerecord-4.2/Gemfile.sqlite3
 - gemfiles/activerecord-5.0/Gemfile.postgresql
 - gemfiles/activerecord-5.0/Gemfile.sqlite3
 env: POSTGRESQL_DB_USER=postgres
