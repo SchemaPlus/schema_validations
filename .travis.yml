@@ -8,6 +8,7 @@ rvm:
 - 2.3.1
 gemfile:
 - gemfiles/activerecord-5.0/Gemfile.postgresql
+- gemfiles/activerecord-5.0/Gemfile.sqlite3
 env: POSTGRESQL_DB_USER=postgres
 addons:
   postgresql: '9.4'
