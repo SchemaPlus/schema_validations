@@ -97,12 +97,18 @@ describe "Validations" do
       expect(Article.new(votes: -2147483649).error_on(:votes).size).to eq(1)
     end
 
+    it "can include the end range" do
+      allow_any_instance_of(::ActiveRecord::Type::Integer).to receive(:range).and_return(-2147483648..2147483648)
+
+      expect(Article.new(votes: 2147483648).error_on(:votes).size).to eq(0)
+    end
+
     it "should validate the range of decimal precision with scale" do
       expect(Article.new(max10: 10).error_on(:max10).size).to eq(1)
       expect(Article.new(max10: 5).error_on(:max10).size).to eq(0)
       expect(Article.new(max10: -10).error_on(:max10).size).to eq(1)
     end
-    
+
     it "should validate the range of decimal precision without scale" do
       expect(Article.new(max100: 100).error_on(:max100).size).to eq(1)
       expect(Article.new(max100: 50).error_on(:max100).size).to eq(0)
