@@ -98,7 +98,7 @@ module SchemaValidations
             datatype = case
                        when respond_to?(:defined_enums) && defined_enums.has_key?(column.name) then :enum
                        when column.type == :integer then :integer
-                       when column.type == :decimal then :decimal
+                       when column.type == :decimal || column.type == :money then :decimal
                        when column.type == :float   then :numeric
                        when column.type == :text || column.type == :string then :text
                        when column.type == :boolean then :boolean
