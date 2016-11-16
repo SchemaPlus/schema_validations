@@ -18,6 +18,15 @@ RSpec.configure do |config|
   config.around(:each) do |example|
     DatabaseCleaner.clean
     remove_all_models
+
+    class ActiveRecord::InternalMetadata
+      def self.create_table
+      end
+
+      def self.[]=(first, second)
+      end
+    end
+
     ActiveRecord::Migration.suppress_messages do
       example.run
     end

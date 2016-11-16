@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency("schema_plus_columns")
-  s.add_dependency("activerecord", "~> 4.2", ">= 4.2.1")
+  s.add_dependency("activerecord", ">= 4.2.1", "< 5.1")
   s.add_dependency("valuable")
-      
+
   s.add_development_dependency("schema_dev", "~> 3.6")
   s.add_development_dependency("rake")
   s.add_development_dependency("rdoc")
