@@ -187,6 +187,12 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.2.0
+
+* Works with AR 5.0.  Thanks to [@plicjo](https://github.coms/plicjo).
+* Works with `:money` type
+* Bug fix when logger is nil.  Thanks to [@gamecreature](https://github.com/gamecreature).
+
 ### 2.1.1
 
 * Bug fix for `:decimal` when `precision` is nil (#37)
