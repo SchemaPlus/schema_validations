@@ -134,7 +134,7 @@ module SchemaValidations
         end
 
         def load_integer_column_validations(name, column) # :nodoc:
-          if column.limit > INTEGER_LIMIT
+          if column.limit && column.limit > INTEGER_LIMIT
             options = { :allow_nil => true, :only_integer => true }
           else
             integer_range = ::ActiveRecord::Type::Integer.new.range
