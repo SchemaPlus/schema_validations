@@ -52,16 +52,16 @@ Simply add schema_validations to your Gemfile.
 ```ruby
 gem "schema_validations"
 ```
-    
+
 ## Which validations are covered?
 
 Constraints:
 
-|      Constraint     |                     Validation                    |
-|---------------------|---------------------------------------------------|
-| `null: false`    | `validates ... presence: true`                       |
-| `limit: 100`     | `validates ... length: { maximum: 100 }`             |
-| `unique: true`   | `validates ... uniqueness: true`                     |
+|      Constraint     |                     Validation                       |
+|---------------------|------------------------------------------------------|
+| `null: false`       | `validates ... presence: true` (or `not field.nil?`) |
+| `limit: 100`        | `validates ... length: { maximum: 100 }`             |
+| `unique: true`      | `validates ... uniqueness: true`                     |
 | `unique: true, case_sensitive: false` <br>(If [schema_plus_pg_indexes](https://github.com/SchemaPlus/schema_plus_pg_indexes) is also in use) | `validates ... uniqueness: { case_sensitive: false }` |
 
 Data types:
@@ -117,6 +117,16 @@ SchemaValidations.setup do |config|
     # Value is a single type, an array of types, or nil.
     # (This whitelist applies after all other considerations, global or per-model)
     config.whitelist_type = nil
+    
+    # Determines validation behavior for the NOT NULL constraint.
+    # :not_nil_if_blank_default (default behavior since version 2.3.0)
+    #   check for presence (not nil or empty), unless the column's default value
+    #   is empty, in which case the correct behavior is usually to check for nil
+    #   values only.
+    # :presence (behavior before version 2.3.0)
+    #   always use presence checks, regardless of the column's default value.
+    # :not_nil
+    #   always allow empty values, regardless of the column's default value.
 end
 ```    
 
@@ -186,6 +196,11 @@ Earlier versions of SchemaValidations supported:
 
 
 ## Release Notes
+
+### 2.3.0
+
+* Add a configuration option to control nil or presence validation when the NOT NULL constraint is used.
+  (this version may break compatibility only in very rare cases)
 
 ### 2.2.0
 
