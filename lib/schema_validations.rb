@@ -22,7 +22,6 @@ module SchemaValidations
   #     end
   #
   class Config < Valuable
-    include ActiveModel::Validations
     ##
     # :attr_accessor: auto_create
     #
@@ -74,19 +73,6 @@ module SchemaValidations
     # Value is a single type, and array of types, or +nil+.  Default is +nil+.
     # A type is specified as, e.g., +:validates_presence_of+ or simply +:presence+.
     has_value :only_type, :default => nil
-
-    ##
-    # :attr_accessor: not_null_validation
-    #
-    # Value is either: +:presence+, +:not_nil+, +:not_nil_if_blank_default+
-    # Determines validation behavior for the NOT NULL constraint.
-    # The default behavior (since version 2.3.0) is to check for presence (not nil or empty), unless the column's
-    # default value is empty, in which case the correct behavior is usually to check for nil values only.
-    # You can also set this configuration value to +:presence+ to always use presence checks (the normal behavior
-    # of this gem on versions prior to 2.3.0) or to +:not_nil+ to always allow empty values, regardless of the column's
-    # default value.
-    has_value :not_null_validation, default: :not_nil_if_blank_default
-    validates_inclusion_of :not_null_validation, in: %i[presence not_nil not_nil_if_blank_default]
 
     def dup #:nodoc:
       self.class.new(Hash[attributes.collect{ |key, val| [key, Valuable === val ?  val.class.new(val.attributes) : val] }])

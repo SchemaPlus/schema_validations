@@ -91,7 +91,6 @@ module SchemaValidations
         end
 
         def load_column_validations #:nodoc:
-          not_null_validation = schema_validations_config.not_null_validation
           content_columns.each do |column|
             name = column.name.to_sym
 
@@ -124,9 +123,7 @@ module SchemaValidations
               if datatype == :boolean
                 validate_logged :validates_inclusion_of, name, :in => [true, false], :message => :blank
               else
-                if  not_null_validation == :not_nil or
-                    not_null_validation == :not_nil_if_blank_default &&
-                      !column.default.nil? && column.default.blank?
+                if !column.default.nil? && column.default.blank?
                   validate_logged :validates_with, SchemaValidations::Validators::NotNilValidator, attributes: [name]
                 else
                   # Validate presence

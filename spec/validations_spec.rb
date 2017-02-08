@@ -220,67 +220,22 @@ describe "Validations" do
 
       end
 
-      context 'is set to default (conditional) behavior' do
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_nil.error_on(:no_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:blank_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:non_blank_default).size).to eq(1)
-        end
-
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_blank.error_on(:no_default).size).to eq(1)
-          expect(AntiNull.all_blank.error_on(:non_blank_default).size).to eq(1)
-          expect(AntiNull.all_blank.error_on(:blank_default)).to be_empty
-        end
-
-        it 'should not fail if fields are neither nil nor empty' do
-          expect(AntiNull.all_non_blank).to be_valid
-        end
+      it 'should fail validation on empty fields only if the default value is not blank' do
+        expect(AntiNull.all_nil.error_on(:no_default).size).to eq(1)
+        expect(AntiNull.all_nil.error_on(:blank_default).size).to eq(1)
+        expect(AntiNull.all_nil.error_on(:non_blank_default).size).to eq(1)
       end
 
-      context 'is set to :presence' do
-        around(:each) do |example|
-          with_not_null_validation(:presence, &example)
-        end
-
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_nil.error_on(:no_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:blank_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:non_blank_default).size).to eq(1)
-        end
-
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_blank.error_on(:no_default).size).to eq(1)
-          expect(AntiNull.all_blank.error_on(:non_blank_default).size).to eq(1)
-          expect(AntiNull.all_blank.error_on(:blank_default).size).to eq(1)
-        end
-
-        it 'should not fail if fields are neither nil nor empty' do
-          expect(AntiNull.all_non_blank).to be_valid
-        end
+      it 'should fail validation on empty fields only if the default value is not blank' do
+        expect(AntiNull.all_blank.error_on(:no_default).size).to eq(1)
+        expect(AntiNull.all_blank.error_on(:non_blank_default).size).to eq(1)
+        expect(AntiNull.all_blank.error_on(:blank_default)).to be_empty
       end
 
-      context 'is set to :' do
-        around(:each) do |example|
-          with_not_null_validation(:not_nil, &example)
-        end
-
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_nil.error_on(:no_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:blank_default).size).to eq(1)
-          expect(AntiNull.all_nil.error_on(:non_blank_default).size).to eq(1)
-        end
-
-        it 'should fail validation on empty fields only if the default value is not blank' do
-          expect(AntiNull.all_blank.error_on(:no_default)).to be_empty
-          expect(AntiNull.all_blank.error_on(:non_blank_default)).to be_empty
-          expect(AntiNull.all_blank.error_on(:blank_default)).to be_empty
-        end
-
-        it 'should not fail if fields are neither nil nor empty' do
-          expect(AntiNull.all_non_blank).to be_valid
-        end
+      it 'should not fail if fields are neither nil nor empty' do
+        expect(AntiNull.all_non_blank).to be_valid
       end
+
     end
   end
 
@@ -553,17 +508,6 @@ describe "Validations" do
     end
   end
 
-  def with_not_null_validation(value)
-    old_value = SchemaValidations.config.not_null_validation
-    begin
-      SchemaValidations.setup do |config|
-        config.not_null_validation = value
-      end
-      yield
-    ensure
-      SchemaValidations.config.not_null_validation = old_value
-    end
-  end
 
   def valid_article_attributes
     {
