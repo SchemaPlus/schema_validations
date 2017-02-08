@@ -2,6 +2,7 @@ require 'valuable'
 
 require 'schema_plus_columns'
 require 'schema_validations/version'
+require 'schema_validations/validators/not_nil_validator'
 require 'schema_validations/active_record/validations'
 require 'schema_validations/active_record/type'
 

@@ -187,6 +187,11 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.2.1
+
+* Bug fix: don't create presence validation for `null: false` with a
+  default defined (#18, #49)
+
 ### 2.2.0
 
 * Works with AR 5.0.  Thanks to [@plicjo](https://github.coms/plicjo).
