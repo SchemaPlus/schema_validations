@@ -7,6 +7,7 @@ module SchemaValidations
       end
 
       module ClassMethods
+        INTEGER_LIMIT = 4
 
         def self.extended(base)
           base.class_eval do
@@ -138,15 +139,19 @@ module SchemaValidations
         end
 
         def load_integer_column_validations(name, column) # :nodoc:
-          integer_range = ::ActiveRecord::Type::Integer.new.range
-          # The Ruby Range object does not support excluding the beginning of a Range,
-          # so we always include :greater_than_or_equal_to
-          options = { :allow_nil => true, :only_integer => true, greater_than_or_equal_to: integer_range.begin }
-
-          if integer_range.exclude_end?
-            options[:less_than] = integer_range.end
+          if column.limit && column.limit > INTEGER_LIMIT
+            options = { :allow_nil => true, :only_integer => true }
           else
-            options[:less_than_or_equal_to] = integer_range.end
+            integer_range = ::ActiveRecord::Type::Integer.new.range
+            # The Ruby Range object does not support excluding the beginning of a Range,
+            # so we always include :greater_than_or_equal_to
+            options = { :allow_nil => true, :only_integer => true, greater_than_or_equal_to: integer_range.begin }
+
+            if integer_range.exclude_end?
+              options[:less_than] = integer_range.end
+            else
+              options[:less_than_or_equal_to] = integer_range.end
+            end
           end
 
           validate_logged :validates_numericality_of, name, options
