@@ -187,6 +187,11 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.3.0
+
+* Works with AR 5.1.
+* No longer testing rails 4.2
+
 ### 2.2.1
 
 * Bug fix: don't create presence validation for `null: false` with a
