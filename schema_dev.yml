@@ -1,8 +1,8 @@
 ruby:
   - 2.3.1
 activerecord:
-  - 4.2
   - 5.0
+  - 5.1
 db:
   - mysql2
   - postgresql
