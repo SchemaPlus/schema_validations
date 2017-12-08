@@ -198,7 +198,7 @@ module SchemaValidations
         end
 
         def validate_logged(method, arg, opts={}) #:nodoc:
-          if _filter_validation(method, arg)
+          if _filter_validation(method, arg, opts)
             msg = "[schema_validations] #{self.name}.#{method} #{arg.inspect}"
             msg += ", #{opts.inspect[1...-1]}" if opts.any?
             logger.debug msg if logger
@@ -206,12 +206,18 @@ module SchemaValidations
           end
         end
 
-        def _filter_validation(macro, name) #:nodoc:
+        def _filter_validation(macro, name, opts) #:nodoc:
           config = schema_validations_config
           types = [macro]
-          if match = macro.to_s.match(/^validates_(.*)_of$/)
-            types << match[1].to_sym
+
+          case macro.to_s
+            when /^validates_(.*)_of$/
+              types << Regexp.last_match[1].to_sym
+            when 'validates_with'
+              types << name
+              name = opts[:attributes].first
           end
+
           return false if config.only           and not Array.wrap(config.only).include?(name)
           return false if config.except         and     Array.wrap(config.except).include?(name)
           return false if config.whitelist      and     Array.wrap(config.whitelist).include?(name)
