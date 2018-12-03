@@ -2,9 +2,9 @@ require "pathname"
 eval(Pathname.new(__FILE__).dirname.join("Gemfile.base").read, binding)
 
 platform :ruby do
-  gem "pg", "< 1"
+  gem "mysql2"
 end
 
 platform :jruby do
-  gem 'activerecord-jdbcpostgresql-adapter'
+  gem 'activerecord-jdbcmysql-adapter'
 end
