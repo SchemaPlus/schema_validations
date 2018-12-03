@@ -2,7 +2,7 @@ require "pathname"
 eval(Pathname.new(__FILE__).dirname.join("Gemfile.base").read, binding)
 
 platform :ruby do
-  gem "pg", "< 1"
+  gem "pg"
 end
 
 platform :jruby do
