@@ -175,13 +175,15 @@ module SchemaValidations
           options[:scope] = scope if scope.any?
           options[:allow_nil] = true
           options[:case_sensitive] = false if has_case_insensitive_index?(column, scope)
-          options[:if] = (proc do |record|
-            if scope.all? { |scope_sym| record.public_send(:"#{scope_sym}?") }
-              record.public_send(:"#{column.name}_changed?")
-            else
-              false
-            end
-          end)
+          if schema_validations_config.uniqueness_if_changed
+            options[:if] = (proc do |record|
+              if scope.all? { |scope_sym| record.public_send(:"#{scope_sym}?") }
+                record.public_send(:"#{column.name}_changed?")
+              else
+                false
+              end
+            end)
+          end
 
           validate_logged :validates_uniqueness_of, name, options
         end

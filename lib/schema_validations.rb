@@ -74,6 +74,13 @@ module SchemaValidations
     # A type is specified as, e.g., +:validates_presence_of+ or simply +:presence+.
     has_value :only_type, :default => nil
 
+    ##
+    # :attr_accessor: uniqueness_if_changed
+    #
+    # Whether to check if the column has changed before validating uniqueness.
+    # Boolean, default is +true+.
+    has_value :uniqueness_if_changed, :klass => :boolean, :default => true
+
     def dup #:nodoc:
       self.class.new(Hash[attributes.collect{ |key, val| [key, Valuable === val ?  val.class.new(val.attributes) : val] }])
     end
