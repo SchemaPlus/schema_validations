@@ -1,6 +1,5 @@
 require 'simplecov'
-require 'simplecov-gem-profile'
-SimpleCov.start "gem"
+SimpleCov.start
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -9,26 +8,19 @@ require 'rspec'
 require 'active_record'
 require 'schema_validations'
 require 'schema_dev/rspec'
-require 'database_cleaner'
-DatabaseCleaner.strategy = :truncation
 
 SchemaDev::Rspec.setup
 
 RSpec.configure do |config|
   config.around(:each) do |example|
-    DatabaseCleaner.clean
     remove_all_models
-
-    class ActiveRecord::InternalMetadata
-      def self.create_table
-      end
-
-      def self.[]=(first, second)
-      end
-    end
 
     ActiveRecord::Migration.suppress_messages do
       example.run
+    ensure
+      ActiveRecord::Base.connection.tables.each do |table|
+        ActiveRecord::Migration.drop_table table, force: :cascade
+      end
     end
   end
 end
@@ -36,14 +28,24 @@ end
 # avoid deprecation warnings
 I18n.enforce_available_locales = true
 
-Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each {|f| require f}
+Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each { |f| require f }
 
 def remove_all_models
-  ObjectSpace.each_object(Class) do |c|
-    next unless c.ancestors.include? ActiveRecord::Base
-    next if c == ActiveRecord::Base
-    next if c.name.blank?
+  ActiveRecord::Base.descendants.each do |c|
+    next if c == ActiveRecord::InternalMetadata
+    next if c == ActiveRecord::SchemaMigration
     ActiveSupport::Dependencies.remove_constant c.name
+  end
+end
+
+def define_schema(config={}, &block)
+  ActiveRecord::Migration.suppress_messages do
+    ActiveRecord::Schema.define do
+      connection.tables.each do |table|
+        drop_table table, force: :cascade
+      end
+      instance_eval &block
+    end
   end
 end
 

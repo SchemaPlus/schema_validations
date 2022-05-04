@@ -1,5 +1,5 @@
-require "pathname"
-eval(Pathname.new(__FILE__).dirname.join("Gemfile.base").read, binding)
+base_gemfile = File.expand_path('../Gemfile.base', __FILE__)
+eval File.read(base_gemfile), binding, base_gemfile
 
 platform :ruby do
   gem "sqlite3"

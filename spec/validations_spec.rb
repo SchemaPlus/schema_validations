@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Validations" do
 
   before(:each) do
-    ActiveRecord::Schema.define do
+    define_schema do
 
       create_table :articles, force: true do |t|
         t.string :title, limit: 50

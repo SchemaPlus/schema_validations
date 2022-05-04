@@ -27,3 +27,4 @@ Gemfile.local
 Gemfile.lock
 gemfiles/*.lock
 gemfiles/**/*.lock
+/.idea
