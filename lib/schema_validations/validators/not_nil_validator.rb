@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchemaValidations
   module Validators
     # Validates that the field is not nil?

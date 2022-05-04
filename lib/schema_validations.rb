@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'valuable'
 
 require 'schema_plus_columns'

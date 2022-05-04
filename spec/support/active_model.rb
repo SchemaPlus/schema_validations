@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ported from rspec-rails
 # There is no reason to install whole gem as we
 # need only that tiny helper

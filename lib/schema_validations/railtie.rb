@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchemaValidations
   class Railtie < Rails::Railtie #:nodoc:
 
