@@ -1,0 +1,4 @@
+base_gemfile = File.expand_path('../../Gemfile.base', __FILE__)
+eval File.read(base_gemfile)
+
+gem "activerecord", ">= 6.1", "< 6.2"

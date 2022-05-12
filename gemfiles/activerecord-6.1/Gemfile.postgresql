@@ -1,0 +1,10 @@
+base_gemfile = File.expand_path('../Gemfile.base', __FILE__)
+eval File.read(base_gemfile), binding, base_gemfile
+
+platform :ruby do
+  gem "pg"
+end
+
+platform :jruby do
+  gem 'activerecord-jdbcpostgresql-adapter'
+end

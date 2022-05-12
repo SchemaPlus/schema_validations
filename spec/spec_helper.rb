@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start unless SimpleCov.running
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
@@ -15,8 +15,6 @@ SchemaDev::Rspec.setup
 
 RSpec.configure do |config|
   config.around(:each) do |example|
-    remove_all_models
-
     ActiveRecord::Migration.suppress_messages do
       example.run
     ensure
@@ -31,14 +29,6 @@ end
 I18n.enforce_available_locales = true
 
 Dir[File.dirname(__FILE__) + "/support/**/*.rb"].each { |f| require f }
-
-def remove_all_models
-  ActiveRecord::Base.descendants.each do |c|
-    next if c == ActiveRecord::InternalMetadata
-    next if c == ActiveRecord::SchemaMigration
-    ActiveSupport::Dependencies.remove_constant c.name
-  end
-end
 
 def define_schema(config={}, &block)
   ActiveRecord::Migration.suppress_messages do

@@ -3,6 +3,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Validations" do
+  def stub_model(name, base = ActiveRecord::Base, &block)
+    klass = Class.new(base)
+
+    if block_given?
+      klass.instance_eval(&block)
+    end
+
+    stub_const(name, klass)
+  end
 
   before(:each) do
     define_schema do
@@ -41,15 +50,15 @@ describe "Validations" do
   context "auto-created" do
     before(:each) do
       with_auto_validations do
-        class Article < ActiveRecord::Base ; end
+        stub_model('Article')
 
-        class Review < ActiveRecord::Base
+        stub_model('Review') do
           belongs_to :article
           belongs_to :news_article, class_name: 'Article', foreign_key: :article_id
           schema_validations except: :content
         end
 
-        class ArticleReview < ActiveRecord::Base
+        stub_model('ArticleReview') do
           belongs_to :article
           belongs_to :review
         end
@@ -187,7 +196,7 @@ describe "Validations" do
           end
         end
         with_auto_validations do
-          class AntiNull < ActiveRecord::Base
+          stub_model('AntiNull') do
             def self.all_blank
               @all_blank ||= AntiNull.new(
                 no_default: '',
@@ -244,8 +253,8 @@ describe "Validations" do
   context "auto-created but changed" do
     before(:each) do
       with_auto_validations do
-        class Article < ActiveRecord::Base ; end
-        class Review < ActiveRecord::Base
+        stub_model('Article')
+        stub_model('Review') do
           belongs_to :article
           belongs_to :news_article, class_name: 'Article', foreign_key: :article_id
         end
@@ -314,7 +323,8 @@ describe "Validations" do
     end
 
     before(:each) do
-      class Review < ActiveRecord::Base
+      stub_model('Article')
+      stub_model('Review') do
         belongs_to :article
         belongs_to :news_article, class_name: 'Article', foreign_key: :article_id
       end
@@ -339,10 +349,10 @@ describe "Validations" do
 
   context "manually invoked" do
     before(:each) do
-      class Article < ActiveRecord::Base ; end
+      stub_model('Article')
       Article.schema_validations only: [:title, :state]
 
-      class Review < ActiveRecord::Base
+      stub_model('Review') do
         belongs_to :dummy_association
         schema_validations except: :content
       end
@@ -378,7 +388,7 @@ describe "Validations" do
 
   context "manually invoked" do
     before(:each) do
-      class Review < ActiveRecord::Base
+      stub_model('Review') do
         belongs_to :article
       end
       @columns = Review.content_columns.dup
@@ -399,16 +409,16 @@ describe "Validations" do
     around(:each) { |example| with_auto_validations(&example) }
 
     it "should set validations on base class" do
-      class Review < ActiveRecord::Base ; end
-      class PremiumReview < Review ; end
+      stub_model('Review')
+      stub_model('PremiumReview', Review)
       PremiumReview.new
       expect(Review.new.error_on(:author).size).to eq(1)
     end
 
     it "shouldn't create doubled validations" do
-      class Review < ActiveRecord::Base ; end
+      stub_model('Review')
       Review.new
-      class PremiumReview < Review ; end
+      stub_model('PremiumReview', Review)
       expect(PremiumReview.new.error_on(:author).size).to eq(1)
     end
 
@@ -416,7 +426,7 @@ describe "Validations" do
 
   context "when used with enum" do
     it "does not validate numericality" do
-      class Article < ActiveRecord::Base
+      stub_model('Article') do
         enum state: [:happy, :sad]
       end
       expect(Article.new(valid_article_attributes.merge(state: :happy))).to be_valid
@@ -439,7 +449,7 @@ describe "Validations" do
         end
 
         with_auto_validations do
-          class Book < ActiveRecord::Base; end
+          stub_model('Book') do; end
         end
       end
 
@@ -464,8 +474,8 @@ describe "Validations" do
         end
 
         with_auto_validations do
-          class Folder < ActiveRecord::Base
-            belongs_to :parent, class_name: Folder.name
+          stub_model('Folder') do
+            belongs_to :parent, class_name: 'Folder'
           end
         end
       end
@@ -489,7 +499,7 @@ describe "Validations" do
         end
       end
       with_auto_validations do
-        class Optimistic < ActiveRecord::Base; end
+        stub_model('Optimistic') do; end
       end
     end
     it 'should not crash' do
