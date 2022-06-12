@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = '>= 2.5'
 
-  gem.add_dependency 'schema_plus_columns', '~> 1.0.1.beta.1'
+  gem.add_dependency 'schema_plus_columns', '~> 1.0.1'
   gem.add_dependency 'activerecord', '>= 5.2', '< 7.1'
   gem.add_dependency 'valuable'
 

@@ -198,6 +198,11 @@ Earlier versions of SchemaValidations supported:
 
 ## Release Notes
 
+### 2.4.1
+
+* Add AR 6.1 and 7.0
+* add ruby 3.1
+
 ### 2.4.0
 
 * Add AR 6.0
